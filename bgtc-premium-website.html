@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bandewar's GTC – Nagpur's No.1 Coaching Institute</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root {
+  --navy:#0A1628;
+  --royal:#1A3A6C;
+  --cobalt:#2255CC;
+  --sky:#4A90D9;
+  --gold:#C9A84C;
+  --gold-light:#E8C96A;
+  --gold-pale:#F5E8BC;
+  --white:#FFFFFF;
+  --off-white:#F6F8FC;
+  --glass:rgba(255,255,255,0.10);
+  --glass-border:rgba(201,168,76,0.25);
+  --text-dark:#0D1B36;
+  --text-mid:#3A4A6A;
+  --text-light:#7A8BAA;
+  --shadow:0 8px 40px rgba(10,22,40,0.18);
+  --shadow-gold:0 4px 24px rgba(201,168,76,0.28);
+  --radius:16px;
+  --transition:0.38s cubic-bezier(0.23,1,0.32,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off-white);color:var(--text-dark);overflow-x:hidden}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* ===== UTILITY ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;background:var(--gold-pale);color:var(--royal);padding:6px 16px;border-radius:50px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.section-tag i{color:var(--gold);font-size:.85rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;line-height:1.18;color:var(--navy)}
+.section-title span{color:var(--gold)}
+.section-sub{color:var(--text-mid);font-size:1.05rem;line-height:1.7;margin-top:12px;max-width:580px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;transition:var(--transition);text-decoration:none;border:none;outline:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--navy);box-shadow:var(--shadow-gold)}
+.btn-gold:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 32px rgba(201,168,76,0.45)}
+.btn-outline{background:transparent;border:2px solid var(--gold-light);color:var(--white)}
+.btn-outline:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);transform:translateY(-3px)}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== SCHOLARSHIP BANNER ===== */
+#scholarship-banner{background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);padding:10px 0;text-align:center;position:relative;z-index:1000}
+#scholarship-banner p{font-size:.85rem;font-weight:700;color:var(--navy);letter-spacing:.04em}
+#scholarship-banner span{background:var(--navy);color:var(--gold);padding:2px 10px;border-radius:4px;margin:0 8px}
+#close-banner{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--navy);opacity:.7}
+
+/* ===== NAVBAR ===== */
+#navbar{position:fixed;top:36px;left:0;right:0;z-index:999;transition:var(--transition)}
+#navbar.scrolled{top:0;background:rgba(10,22,40,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 2px 32px rgba(0,0,0,0.3)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1260px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;color:var(--navy);font-family:'Playfair Display',serif}
+.logo-text{display:flex;flex-direction:column}
+.logo-name{font-size:1.05rem;font-weight:800;color:var(--white);line-height:1}
+.logo-tagline{font-size:.65rem;color:var(--gold-light);letter-spacing:.06em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.82);text-decoration:none;font-size:.88rem;font-weight:600;padding:8px 14px;border-radius:8px;transition:var(--transition)}
+.nav-links a:hover{color:var(--gold-light);background:var(--glass)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.dark-toggle{width:38px;height:38px;background:var(--glass);border:1px solid var(--glass-border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-light);font-size:.9rem;transition:var(--transition)}
+.dark-toggle:hover{background:rgba(201,168,76,0.2);transform:rotate(20deg)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:var(--transition)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--navy);z-index:998;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white);text-decoration:none;font-size:1.5rem;font-weight:700;transition:var(--transition)}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:24px;right:24px;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer}
+
+/* ===== HERO ===== */
+#hero{min-height:100vh;background:linear-gradient(135deg,#020C1E 0%,#0A1628 40%,#0D2047 70%,#071433 100%);position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05) 1px,transparent 1px);background-size:60px 60px;opacity:.6}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(34,85,204,0.35) 0%,transparent 70%);top:-100px;right:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.2) 0%,transparent 70%);bottom:-80px;left:-80px}
+.orb3{width:250px;height:250px;background:radial-gradient(circle,rgba(74,144,217,0.2) 0%,transparent 70%);top:40%;left:35%}
+.floating-icons{position:absolute;inset:0;pointer-events:none}
+.fi{position:absolute;font-size:1.3rem;color:rgba(201,168,76,0.22);animation:floatIcon linear infinite}
+@keyframes floatIcon{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:.8}100%{transform:translateY(-200px) rotate(360deg);opacity:0}}
+.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:120px 0 80px}
+.hero-left{}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.35);color:var(--gold-light);padding:8px 20px;border-radius:50px;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px;animation:fadeUp .8s ease .2s both}
+.hero-badge i{animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:900;color:var(--white);line-height:1.12;animation:fadeUp .8s ease .35s both;margin-bottom:20px}
+.hero-title .gold-text{color:var(--gold)}
+.hero-title .line2{display:block;font-size:.72em;color:rgba(255,255,255,.7);font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.02em;margin-top:4px}
+.hero-desc{color:rgba(255,255,255,.72);font-size:1.05rem;line-height:1.75;animation:fadeUp .8s ease .5s both;margin-bottom:32px;max-width:480px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s ease .65s both;margin-bottom:40px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;animation:fadeUp .8s ease .8s both}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold-light);line-height:1}
+.hero-stat-label{font-size:.72rem;color:rgba(255,255,255,.55);letter-spacing:.05em;text-transform:uppercase;margin-top:4px}
+.hero-divider{width:1px;background:rgba(255,255,255,.15);align-self:stretch}
+.hero-right{animation:fadeUp .8s ease .4s both}
+.hero-card{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,.2);border-radius:24px;padding:36px;box-shadow:0 24px 80px rgba(0,0,0,0.4)}
+.hero-card-title{font-size:1.25rem;font-weight:800;color:var(--white);margin-bottom:6px}
+.hero-card-sub{font-size:.85rem;color:rgba(255,255,255,.55);margin-bottom:24px}
+.form-group{margin-bottom:16px;position:relative}
+.form-group label{display:block;font-size:.75rem;font-weight:700;color:var(--gold-light);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:11px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:var(--white);font-size:.9rem;font-family:inherit;outline:none;transition:var(--transition)}
+.form-group input::placeholder{color:rgba(255,255,255,.3)}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold);background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(201,168,76,.15)}
+.form-group select option{background:var(--navy);color:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;animation:fadeUp 1s ease 1.2s both}
+.scroll-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:scrollBounce 1.5s ease infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* ===== MARQUEE ===== */
+.marquee-strip{background:var(--navy);padding:14px 0;overflow:hidden;border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15)}
+.marquee-track{display:flex;gap:48px;animation:marqueeScroll 25s linear infinite;white-space:nowrap;width:max-content}
+.marquee-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.65);font-size:.82rem;font-weight:600}
+.marquee-item i{color:var(--gold)}
+@keyframes marqueeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===== ABOUT ===== */
+#about{padding:100px 0;background:var(--white)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.about-img-wrap{position:relative}
+.about-img-main{width:100%;border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.about-img-main img{width:100%;display:block;object-fit:cover;height:420px}
+.about-img-badge{position:absolute;bottom:-24px;right:-24px;background:linear-gradient(135deg,var(--navy),var(--royal));color:var(--white);padding:20px 24px;border-radius:16px;box-shadow:var(--shadow);border:1px solid rgba(201,168,76,.25);text-align:center}
+.about-img-badge .num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--gold);display:block}
+.about-img-badge .lbl{font-size:.72rem;color:rgba(255,255,255,.65);letter-spacing:.05em;text-transform:uppercase}
+.about-features{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.about-feat{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--off-white);border-radius:12px;transition:var(--transition)}
+.about-feat:hover{background:var(--gold-pale);transform:translateY(-2px)}
+.about-feat-icon{width:36px;height:36px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--navy);flex-shrink:0;font-size:.85rem}
+.about-feat-text h4{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:2px}
+.about-feat-text p{font-size:.78rem;color:var(--text-light);line-height:1.5}
+
+/* ===== STATS ===== */
+#stats{padding:80px 0;background:linear-gradient(135deg,var(--navy) 0%,var(--royal) 60%,var(--navy) 100%);position:relative;overflow:hidden}
+.stats-bg{position:absolute;inset:0;background-image:radial-gradient(rgba(201,168,76,.08) 1px,transparent 1px);background-size:32px 32px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative;z-index:1}
+.stat-card{text-align:center;padding:48px 24px;position:relative}
+.stat-card:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.1)}
+.stat-ring{width:90px;height:90px;margin:0 auto 20px;position:relative}
+.stat-ring svg{transform:rotate(-90deg)}
+.stat-ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:6}
+.stat-ring-fill{fill:none;stroke:var(--gold);stroke-width:6;stroke-linecap:round;stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 2s cubic-bezier(0.23,1,0.32,1)}
+.stat-ring-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--gold-light);font-size:1.3rem}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;color:var(--white);line-height:1}
+.stat-num span.counter{color:var(--gold-light)}
+.stat-num .suffix{color:var(--gold);font-size:2rem}
+.stat-lbl{font-size:.82rem;color:rgba(255,255,255,.55);letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+.particles{position:absolute;inset:0;pointer-events:none}
+.particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:.3;animation:floatParticle ease-in-out infinite}
+@keyframes floatParticle{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--tx),var(--ty))}}
+
+/* ===== COUNTDOWN ===== */
+#countdown{background:var(--gold);padding:18px 0}
+.countdown-inner{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
+.cd-label{font-size:.9rem;font-weight:800;color:var(--navy);letter-spacing:.05em;text-transform:uppercase}
+.cd-units{display:flex;gap:16px;align-items:center}
+.cd-unit{background:var(--navy);color:var(--gold-light);padding:8px 16px;border-radius:8px;text-align:center;min-width:58px}
+.cd-num{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;display:block;line-height:1}
+.cd-txt{font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.cd-sep{font-size:1.5rem;font-weight:900;color:var(--navy);opacity:.4}
+
+/* ===== COURSES ===== */
+#courses{padding:100px 0;background:var(--off-white)}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.course-card{background:var(--white);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.06);transition:var(--transition);cursor:pointer}
+.course-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--royal),var(--cobalt));opacity:0;transition:var(--transition)}
+.course-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(10,22,40,0.18)}
+.course-card:hover::before{opacity:1}
+.course-card:hover .course-icon,.course-card:hover .course-title,.course-card:hover .course-desc,.course-card:hover .course-tag{color:var(--white) !important}
+.course-card:hover .course-icon-wrap{background:rgba(255,255,255,.15);transform:scale(1.1)}
+.course-card:hover .course-learn{opacity:1;transform:translateY(0);background:var(--gold)}
+.course-card:hover .course-border{background:var(--gold);width:100%}
+.course-border{position:absolute;bottom:0;left:0;height:3px;width:0;background:var(--gold);transition:var(--transition)}
+.course-icon-wrap{width:60px;height:60px;background:var(--off-white);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:var(--transition)}
+.course-icon{font-size:1.6rem;transition:var(--transition)}
+.course-title{font-size:1.18rem;font-weight:800;color:var(--navy);margin-bottom:10px;transition:var(--transition)}
+.course-desc{font-size:.88rem;color:var(--text-light);line-height:1.7;margin-bottom:20px;transition:var(--transition)}
+.course-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.course-tag{font-size:.7rem;font-weight:700;color:var(--royal);background:var(--off-white);padding:4px 10px;border-radius:50px;letter-spacing:.04em;transition:var(--transition)}
+.course-learn{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);padding:10px 20px;border-radius:50px;font-size:.82rem;font-weight:800;opacity:0;transform:translateY(10px);transition:var(--transition);cursor:pointer;text-decoration:none}
+
+/* ===== FACULTY ===== */
+#faculty{padding:100px 0;background:var(--white)}
+.faculty-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.faculty-card{background:var(--off-white);border-radius:20px;overflow:hidden;transition:var(--transition);position:relative}
+.faculty-card:hover{transform:translateY(-10px) rotateX(2deg);box-shadow:0 30px 80px rgba(10,22,40,0.18)}
+.faculty-img{height:220px;overflow:hidden;position:relative}
+.faculty-img img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
+.faculty-card:hover .faculty-img img{transform:scale(1.08)}
+.faculty-social{position:absolute;bottom:-50px;left:0;right:0;display:flex;justify-content:center;gap:10px;transition:var(--transition);padding-bottom:12px}
+.faculty-card:hover .faculty-social{bottom:12px}
+.social-icon{width:34px;height:34px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:.8rem;text-decoration:none;transition:var(--transition)}
+.social-icon:hover{background:var(--navy);color:var(--gold)}
+.faculty-body{padding:24px}
+.faculty-name{font-size:1.05rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.faculty-subject{font-size:.82rem;color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px}
+.faculty-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.faculty-tag{font-size:.7rem;background:var(--white);color:var(--royal);padding:3px 10px;border-radius:50px;font-weight:600;border:1px solid rgba(26,58,108,.12)}
+.faculty-exp{font-size:.8rem;color:var(--text-light);display:flex;align-items:center;gap:6px}
+.faculty-exp i{color:var(--gold)}
+
+/* ===== RESULTS ===== */
+#results{padding:100px 0;background:linear-gradient(135deg,#020C1E,#0A1628)}
+.results-header{text-align:center;margin-bottom:56px}
+.results-header .section-title{color:var(--white)}
+.results-track{overflow:hidden;position:relative}
+.results-track::before,.results-track::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.results-track::before{left:0;background:linear-gradient(90deg,#020C1E,transparent)}
+.results-track::after{right:0;background:linear-gradient(-90deg,#020C1E,transparent)}
+.results-inner{display:flex;gap:20px;animation:resultsScroll 30s linear infinite;width:max-content}
+.results-inner:hover{animation-play-state:paused}
+@keyframes resultsScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.rank-card{min-width:200px;background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(201,168,76,.18);border-radius:16px;padding:20px;text-align:center;flex-shrink:0;transition:var(--transition)}
+.rank-card:hover{border-color:var(--gold);background:rgba(201,168,76,.1);transform:scale(1.04)}
+.rank-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:800;margin-bottom:14px}
+.rank-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:3px solid var(--gold);display:block;background:linear-gradient(135deg,var(--royal),var(--cobalt))}
+.rank-name{font-size:.9rem;font-weight:800;color:var(--white);margin-bottom:4px}
+.rank-score{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:4px}
+.rank-college{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.4}
+.rank-year{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:6px}
+
+/* ===== TESTIMONIALS ===== */
+#testimonials{padding:100px 0;background:var(--off-white)}
+.testimonial-carousel{margin-top:56px;position:relative}
+.testimonial-track{display:flex;gap:24px;overflow:hidden}
+.testimonial-slide{min-width:calc(33.33% - 16px);flex-shrink:0;transition:var(--transition)}
+.testimonial-card{background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:20px;padding:32px;height:100%;position:relative;overflow:hidden;transition:var(--transition)}
+.testimonial-card::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Playfair Display',serif;font-size:8rem;color:var(--gold-pale);line-height:1;pointer-events:none;z-index:0}
+.testimonial-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.testimonial-card:hover{border-color:var(--gold-light)}
+.stars{color:var(--gold);font-size:.9rem;margin-bottom:16px;position:relative;z-index:1}
+.testimonial-text{font-size:.92rem;color:var(--text-mid);line-height:1.75;position:relative;z-index:1;margin-bottom:24px}
+.testimonial-author{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.author-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--royal),var(--cobalt));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:1.1rem;flex-shrink:0}
+.author-name{font-weight:800;font-size:.9rem;color:var(--navy)}
+.author-tag{font-size:.75rem;color:var(--gold);font-weight:700}
+.testimonial-badge{position:absolute;top:20px;right:20px;background:var(--gold-pale);color:var(--navy);padding:4px 10px;border-radius:50px;font-size:.68rem;font-weight:700}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:32px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(26,58,108,.2);cursor:pointer;transition:var(--transition)}
+.dot.active{width:24px;border-radius:4px;background:var(--gold)}
+.carousel-arrows{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.c-arrow{width:44px;height:44px;border-radius:50%;background:var(--white);border:1px solid rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);color:var(--navy)}
+.c-arrow:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+/* ===== GALLERY ===== */
+#gallery{padding:100px 0;background:var(--white)}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto;gap:16px;margin-top:56px}
+.gallery-item{border-radius:14px;overflow:hidden;cursor:pointer;position:relative;background:var(--off-white)}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-img{width:100%;height:100%;min-height:180px;object-fit:cover;display:block;transition:var(--transition)}
+.gallery-item:hover .gallery-img{transform:scale(1.08)}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,.8),transparent);opacity:0;transition:var(--transition);display:flex;align-items:flex-end;padding:20px}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.gallery-label{color:var(--white);font-size:.82rem;font-weight:700}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.lightbox-close{position:absolute;top:24px;right:24px;color:var(--white);font-size:1.8rem;cursor:pointer;background:rgba(255,255,255,.1);width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.lightbox-close:hover{background:var(--gold);color:var(--navy)}
+
+/* ===== CONTACT ===== */
+#contact{padding:100px 0;background:linear-gradient(135deg,var(--navy),var(--royal))}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-info .section-title{color:var(--white)}
+.contact-info .section-sub{color:rgba(255,255,255,.6)}
+.contact-details{margin-top:36px;display:flex;flex-direction:column;gap:20px}
+.contact-item{display:flex;align-items:flex-start;gap:16px}
+.contact-icon{width:44px;height:44px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;font-size:1rem}
+.contact-item-text h4{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.contact-item-text p,.contact-item-text a{font-size:.95rem;color:var(--white);line-height:1.55;text-decoration:none}
+.contact-item-text a:hover{color:var(--gold)}
+.contact-form{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:40px}
+.contact-form .form-group label{color:rgba(255,255,255,.65)}
+.contact-form .form-group input,.contact-form .form-group select,.contact-form .form-group textarea{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:var(--white)}
+.contact-form .form-group textarea{height:110px;resize:none}
+.contact-form .form-group input:focus,.contact-form .form-group select:focus,.contact-form .form-group textarea:focus{border-color:var(--gold);background:rgba(255,255,255,.12)}
+.submit-btn{width:100%;padding:15px;border-radius:50px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-weight:800;font-size:1rem;border:none;cursor:pointer;transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+.submit-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold-light),var(--gold));opacity:0;transition:var(--transition)}
+.submit-btn:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(201,168,76,.45)}
+.submit-btn:hover::before{opacity:1}
+.submit-btn span,.submit-btn i{position:relative;z-index:1}
+.branch-map{margin-top:32px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.branch-map iframe{width:100%;height:220px;border:none;display:block;filter:invert(.9) hue-rotate(180deg)}
+
+/* ===== FAQ ===== */
+#faq{padding:80px 0;background:var(--off-white)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+.faq-item{background:var(--white);border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.06)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;font-weight:700;color:var(--navy);font-size:.92rem;transition:var(--transition)}
+.faq-q:hover{color:var(--cobalt)}
+.faq-q i{color:var(--gold);transition:var(--transition);flex-shrink:0}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;padding:0 24px}
+.faq-a p{color:var(--text-mid);font-size:.88rem;line-height:1.7;padding-bottom:20px}
+.faq-item.open .faq-q{color:var(--cobalt)}
+.faq-item.open .faq-q i{transform:rotate(45deg)}
+.faq-item.open .faq-a{max-height:200px}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy);padding:72px 0 0;border-top:1px solid rgba(201,168,76,.15)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:56px}
+.footer-logo-wrap{}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:16px;text-decoration:none}
+.footer-logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;color:var(--navy);font-family:'Playfair Display',serif}
+.footer-logo-name{font-size:1.05rem;font-weight:800;color:var(--white)}
+.footer-desc{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.7;max-width:300px;margin-bottom:20px}
+.footer-socials{display:flex;gap:10px}
+.footer-social{width:38px;height:38px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:.85rem;text-decoration:none;transition:var(--transition);border:1px solid rgba(255,255,255,.08)}
+.footer-social:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.footer-title{font-size:.78rem;font-weight:800;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.88rem;transition:var(--transition);display:flex;align-items:center;gap:8px}
+.footer-links a:hover{color:var(--gold-light)}
+.footer-links a i{font-size:.7rem;color:var(--gold);opacity:.7}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding:20px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap}
+.footer-copy{font-size:.8rem;color:rgba(255,255,255,.35)}
+.footer-copy span{color:var(--gold)}
+
+/* ===== FLOATING ===== */
+.whatsapp-fab{position:fixed;bottom:88px;right:24px;z-index:900;display:flex;flex-direction:column;align-items:center;gap:12px}
+.wa-btn{width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.4rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.45);transition:var(--transition);animation:waPulse 2.5s ease infinite}
+.wa-btn:hover{transform:scale(1.12)}
+.wa-tooltip{background:var(--white);color:var(--text-dark);padding:6px 12px;border-radius:8px;font-size:.75rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow);position:absolute;right:64px;pointer-events:none;opacity:0;transition:var(--transition)}
+.wa-btn:hover ~ .wa-tooltip{opacity:1}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.45)}50%{box-shadow:0 4px 36px rgba(37,211,102,.75)}}
+.live-counter{position:fixed;bottom:24px;right:24px;z-index:900;background:var(--navy);border:1px solid rgba(201,168,76,.3);border-radius:14px;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
+.live-dot{width:8px;height:8px;background:#2ECC71;border-radius:50%;animation:liveDot 1s ease infinite}
+@keyframes liveDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.live-text{font-size:.78rem;color:var(--white);font-weight:700}
+.live-num{color:var(--gold-light);font-weight:900}
+
+/* ===== DEMO POPUP ===== */
+#demo-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#demo-popup.open{display:flex}
+.popup-card{background:var(--white);border-radius:24px;padding:48px;max-width:480px;width:90%;position:relative;animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.popup-close{position:absolute;top:16px;right:16px;background:var(--off-white);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--text-mid);transition:var(--transition)}
+.popup-close:hover{background:var(--gold);color:var(--navy)}
+.popup-badge{background:var(--gold-pale);color:var(--navy);padding:6px 16px;border-radius:50px;font-size:.78rem;font-weight:800;display:inline-block;margin-bottom:16px}
+.popup-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--navy);margin-bottom:8px}
+.popup-sub{font-size:.9rem;color:var(--text-mid);margin-bottom:24px}
+.popup-form .form-group label{color:var(--text-mid)}
+.popup-form .form-group input,.popup-form .form-group select{background:var(--off-white);border-color:rgba(0,0,0,.1);color:var(--navy)}
+.popup-form .form-group input::placeholder{color:var(--text-light)}
+
+/* ===== BROCHURE BTN ===== */
+#brochure-btn{display:inline-flex;align-items:center;gap:8px;position:fixed;top:50%;right:-4px;transform:translateY(-50%) rotate(-90deg);background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:8px 8px 0 0;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;z-index:890;text-decoration:none;transition:var(--transition);box-shadow:var(--shadow-gold)}
+#brochure-btn:hover{right:-2px;background:var(--gold-light)}
+#brochure-btn i{transform:rotate(90deg)}
+
+/* DARK MODE */
+body.dark{background:#0D1321;color:var(--white)}
+body.dark #about,body.dark #courses,body.dark #faculty,body.dark #gallery,body.dark #testimonials,body.dark #faq{background:#111827}
+body.dark .course-card,body.dark .testimonial-card,body.dark .faq-item,body.dark .about-feat,body.dark .popup-card{background:#1a2235;border-color:rgba(255,255,255,.06);color:var(--white)}
+body.dark .course-title,body.dark .faculty-name,body.dark .author-name,.dark .section-title,body.dark .faq-q{color:var(--white)}
+body.dark .course-desc,body.dark .section-sub,body.dark .testimonial-text,body.dark .faq-a p{color:rgba(255,255,255,.55)}
+body.dark .course-tag,body.dark .faculty-tag{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
+body.dark .gallery-item,.dark .live-counter{background:#1a2235}
+body.dark footer{background:#070f1a}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr;gap:40px;padding-top:110px}
+  .hero-right{max-width:520px}
+  .about-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .courses-grid{grid-template-columns:repeat(2,1fr)}
+  .faculty-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-item:nth-child(1){grid-column:span 1;grid-row:span 1}
+  .gallery-item:nth-child(4){grid-column:span 1}
+}
+@media(max-width:768px){
+  .nav-links,.nav-actions .btn{display:none}
+  .hamburger{display:flex}
+  .hero-title{font-size:2rem}
+  .hero-ctas{flex-direction:column;align-items:flex-start}
+  .hero-stats{gap:16px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .courses-grid,.faculty-grid{grid-template-columns:1fr}
+  .testimonial-slide{min-width:calc(100% - 24px)}
+  .footer-grid{grid-template-columns:1fr}
+  .countdown-inner{gap:14px}
+  .cd-units{gap:8px}
+  #brochure-btn{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Scholarship Banner -->
+<div id="scholarship-banner">
+  <p>🎓 <span>Scholarship Alert!</span> Get upto 70% off on selected courses for JEE & NEET aspirants. Limited seats! <a href="#contact" style="color:var(--navy);font-weight:900;margin-left:8px;text-decoration:underline">Apply Now →</a></p>
+  <button id="close-banner" aria-label="Close">✕</button>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <div class="logo-icon">B</div>
+      <div class="logo-text">
+        <span class="logo-name">BGTC</span>
+        <span class="logo-tagline">Est. 1985 · Nagpur</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#faculty">Faculty</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+      <a href="#hero" class="btn btn-gold" onclick="openDemo()" style="padding:10px 22px;font-size:.82rem">Free Demo</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" id="mobile-close">✕</button>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#courses" onclick="closeMobileMenu()">Courses</a>
+  <a href="#faculty" onclick="closeMobileMenu()">Faculty</a>
+  <a href="#results" onclick="closeMobileMenu()">Results</a>
+  <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="#hero" class="btn btn-gold" onclick="openDemo();closeMobileMenu()">Book Free Demo</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+  <div class="floating-icons" id="floatingIcons"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge"><i class="fas fa-medal"></i> Nagpur's #1 Since 1985</div>
+        <h1 class="hero-title">
+          Shape Your Future with<br>
+          <span class="gold-text">Expert Coaching</span>
+          <span class="line2">JEE · NEET · Commerce · CA · CS · Foundation</span>
+        </h1>
+        <p class="hero-desc">Bandewar's Gajanan Tuition Classes — 40 years of academic excellence, guiding students from Class 8 to competitive success with India's most dedicated faculty team.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-gold" onclick="openDemo()"><i class="fas fa-play-circle"></i> Book Free Demo</button>
+          <a href="#courses" class="btn btn-outline"><i class="fas fa-book-open"></i> Explore Courses</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="40">0</span>+</div><div class="hero-stat-label">Years Legacy</div></div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="40">0</span>K+</div><div class="hero-stat-label">Students</div></div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="98">0</span>%</div><div class="hero-stat-label">Pass Rate</div></div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="2">0</span>+</div><div class="hero-stat-label">Centers</div></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-card">
+          <h3 class="hero-card-title">Enroll for Free Demo Class</h3>
+          <p class="hero-card-sub">Fill in your details — our counsellor calls within 24 hrs</p>
+          <div class="form-row">
+            <div class="form-group"><label>Your Name</label><input type="text" placeholder="Full name"/></div>
+            <div class="form-group"><label>Mobile</label><input type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+          </div>
+          <div class="form-group"><label>Select Course</label>
+            <select>
+              <option value="">— Choose Course —</option>
+              <option>JEE Mains & Advanced</option>
+              <option>NEET</option>
+              <option>MHT-CET</option>
+              <option>Foundation (8th–10th)</option>
+              <option>11th & 12th Commerce</option>
+              <option>CA / CS</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Select Branch</label>
+            <select>
+              <option>Mahal, Nagpur (Main)</option>
+              <option>Dighori, Nagpur</option>
+            </select>
+          </div>
+          <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:4px" onclick="submitHeroForm(this)"><i class="fas fa-paper-plane"></i> <span>Book My Seat</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-dot"></div></div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-strip">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-main" style="background:linear-gradient(135deg,var(--royal),var(--cobalt));display:flex;align-items:center;justify-content:center;height:420px;border-radius:20px">
+          <div style="text-align:center;color:rgba(255,255,255,.6)">
+            <i class="fas fa-school" style="font-size:4rem;color:var(--gold-light);margin-bottom:16px;display:block"></i>
+            <p style="font-size:1rem;font-weight:700">Bandewar's GTC Classroom</p>
+            <p style="font-size:.8rem;opacity:.6;margin-top:4px">Mahal, Nagpur</p>
+          </div>
+        </div>
+        <div class="about-img-badge">
+          <span class="num">40</span>
+          <span class="lbl">Years of<br>Excellence</span>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <div class="section-tag"><i class="fas fa-star"></i> About BGTC</div>
+        <h2 class="section-title">Nagpur's Most Trusted <span>Coaching Institute</span></h2>
+        <p class="section-sub">Established in 1985, Bandewar Gajanan Tuition Classes has been transforming student futures for four decades. With expert faculty, advanced learning facilities and a well-structured curriculum, we deliver consistent top-rank results across all academic streams.</p>
+        <div class="about-features">
+          <div class="about-feat"><div class="about-feat-icon"><i class="fas fa-chalkboard-teacher"></i></div><div class="about-feat-text"><h4>Expert Faculty</h4><p>IIT/NIT-qualified teachers with 10–25 years of experience</p></div></div>
+          <div class="about-feat"><div class="about-feat-icon"><i class="fas fa-flask"></i></div><div class="about-feat-text"><h4>Smart Labs</h4><p>Modern physics, chemistry and biology labs</p></div></div>
+          <div class="about-feat"><div class="about-feat-icon"><i class="fas fa-clipboard-list"></i></div><div class="about-feat-text"><h4>Weekly Tests</h4><p>Regular mock tests with detailed performance reports</p></div></div>
+          <div class="about-feat"><div class="about-feat-icon"><i class="fas fa-headset"></i></div><div class="about-feat-text"><h4>Doubt Sessions</h4><p>Dedicated daily doubt-solving and mentoring support</p></div></div>
+        </div>
+        <a href="#contact" class="btn btn-gold" style="margin-top:28px"><i class="fas fa-arrow-right"></i> Get Counselling</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-bg"></div>
+  <div class="particles" id="statsParticles"></div>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-ring">
+          <svg viewBox="0 0 90 90" width="90" height="90">
+            <circle class="stat-ring-bg" cx="45" cy="45" r="35"/>
+            <circle class="stat-ring-fill" cx="45" cy="45" r="35" data-pct="100"/>
+          </svg>
+          <div class="stat-ring-icon"><i class="fas fa-calendar-alt"></i></div>
+        </div>
+        <div class="stat-num"><span class="counter" data-target="40">0</span><span class="suffix">+</span></div>
+        <div class="stat-lbl">Years of Experience</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-ring">
+          <svg viewBox="0 0 90 90" width="90" height="90">
+            <circle class="stat-ring-bg" cx="45" cy="45" r="35"/>
+            <circle class="stat-ring-fill" cx="45" cy="45" r="35" data-pct="90"/>
+          </svg>
+          <div class="stat-ring-icon"><i class="fas fa-user-graduate"></i></div>
+        </div>
+        <div class="stat-num"><span class="counter" data-target="40">0</span><span class="suffix">K+</span></div>
+        <div class="stat-lbl">Students Passed</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-ring">
+          <svg viewBox="0 0 90 90" width="90" height="90">
+            <circle class="stat-ring-bg" cx="45" cy="45" r="35"/>
+            <circle class="stat-ring-fill" cx="45" cy="45" r="35" data-pct="40"/>
+          </svg>
+          <div class="stat-ring-icon"><i class="fas fa-map-marker-alt"></i></div>
+        </div>
+        <div class="stat-num"><span class="counter" data-target="2">0</span><span class="suffix">+</span></div>
+        <div class="stat-lbl">Offline Centers</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-ring">
+          <svg viewBox="0 0 90 90" width="90" height="90">
+            <circle class="stat-ring-bg" cx="45" cy="45" r="35"/>
+            <circle class="stat-ring-fill" cx="45" cy="45" r="35" data-pct="98"/>
+          </svg>
+          <div class="stat-ring-icon"><i class="fas fa-chart-line"></i></div>
+        </div>
+        <div class="stat-num"><span class="counter" data-target="98">0</span><span class="suffix">%</span></div>
+        <div class="stat-lbl">Results Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div id="countdown">
+  <div class="container">
+    <div class="countdown-inner">
+      <span class="cd-label"><i class="fas fa-clock"></i> JEE Mains 2026 in</span>
+      <div class="cd-units">
+        <div class="cd-unit"><span class="cd-num" id="cd-days">000</span><span class="cd-txt">Days</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-hrs">00</span><span class="cd-txt">Hrs</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-min">00</span><span class="cd-txt">Min</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-sec">00</span><span class="cd-txt">Sec</span></div>
+      </div>
+      <a href="#courses" class="btn btn-gold" style="padding:10px 24px;font-size:.82rem">Enroll Now</a>
+    </div>
+  </div>
+</div>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-tag" style="margin:0 auto 16px"><i class="fas fa-book"></i> Our Programs</div>
+      <h2 class="section-title reveal">Courses Designed for <span>Every Aspiration</span></h2>
+      <p class="section-sub reveal" style="margin:12px auto 0;text-align:center">From Class 8 basics to competitive exam mastery — we have a structured pathway for every student.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">🔬</span></div><h3 class="course-title">JEE Mains & Advanced</h3><p class="course-desc">Comprehensive 2-year coaching covering Physics, Chemistry and Mathematics with IIT-level problem sets, weekly tests and doubt sessions.</p><div class="course-tags"><span class="course-tag">Physics</span><span class="course-tag">Chemistry</span><span class="course-tag">Maths</span><span class="course-tag">Mock Tests</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">🩺</span></div><h3 class="course-title">NEET</h3><p class="course-desc">Expert coaching for NEET aspirants with deep concept building in Biology, Physics and Chemistry. Strong focus on NCERT mastery and previous-year papers.</p><div class="course-tags"><span class="course-tag">Biology</span><span class="course-tag">Chemistry</span><span class="course-tag">Physics</span><span class="course-tag">NCERT</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">📐</span></div><h3 class="course-title">Foundation (8th–10th)</h3><p class="course-desc">Build a rock-solid academic base for State Board & CBSE. Concept clarity, exam prep, regular tests and personalised mentoring for Classes 8 to 10.</p><div class="course-tags"><span class="course-tag">Maths</span><span class="course-tag">Science</span><span class="course-tag">English</span><span class="course-tag">SST</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">💼</span></div><h3 class="course-title">11th & 12th Commerce</h3><p class="course-desc">Accountancy, Economics, Business Studies and Mathematics taught with practical applications, case studies and extensive board-exam practice.</p><div class="course-tags"><span class="course-tag">Accountancy</span><span class="course-tag">Economics</span><span class="course-tag">BST</span><span class="course-tag">Maths</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">📊</span></div><h3 class="course-title">CA & CS</h3><p class="course-desc">Structured coaching for CA Foundation, Inter and Final, plus CS Foundation and Executive levels. Taught by qualified Chartered Accountants.</p><div class="course-tags"><span class="course-tag">CA Foundation</span><span class="course-tag">CA Inter</span><span class="course-tag">CS Foundation</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+      <div class="course-card reveal"><div class="course-border"></div><div class="course-icon-wrap"><span class="course-icon">🌟</span></div><h3 class="course-title">MHT-CET & Extra Courses</h3><p class="course-desc">Targeted coaching for MHT-CET, plus skill enhancement programmes in communication, digital literacy, and career counselling sessions.</p><div class="course-tags"><span class="course-tag">MHT-CET</span><span class="course-tag">Communication</span><span class="course-tag">Skill Dev</span></div><a class="course-learn"><i class="fas fa-arrow-right"></i> Learn More</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FACULTY -->
+<section id="faculty">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-tag" style="margin:0 auto 16px"><i class="fas fa-chalkboard-teacher"></i> Our Experts</div>
+      <h2 class="section-title reveal">Meet Your <span>Mentors</span></h2>
+      <p class="section-sub reveal" style="margin:12px auto 0;text-align:center">IIT & NIT alumni, UPSC toppers, and CAs — our faculty brings real-world expertise to every classroom.</p>
+    </div>
+    <div class="faculty-grid">
+      <div class="faculty-card reveal">
+        <div class="faculty-img" style="background:linear-gradient(135deg,#1A3A6C,#2255CC);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center;color:rgba(255,255,255,.7)"><i class="fas fa-user-circle" style="font-size:5rem;color:var(--gold-light)"></i></div>
+          <div class="faculty-social">
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="faculty-body">
+          <div class="faculty-name">Prof. Gajanan Bandewar</div>
+          <div class="faculty-subject">Mathematics & Science</div>
+          <div class="faculty-tags"><span class="faculty-tag">IIT Alumni</span><span class="faculty-tag">Founder</span><span class="faculty-tag">40+ yrs</span></div>
+          <div class="faculty-exp"><i class="fas fa-star"></i> 40+ Years Experience · M.Sc. Mathematics</div>
+        </div>
+      </div>
+      <div class="faculty-card reveal">
+        <div class="faculty-img" style="background:linear-gradient(135deg,#2D3A5A,#3D5A8A);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center;color:rgba(255,255,255,.7)"><i class="fas fa-user-circle" style="font-size:5rem;color:var(--gold-light)"></i></div>
+          <div class="faculty-social">
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="faculty-body">
+          <div class="faculty-name">Dr. Priya Sharma</div>
+          <div class="faculty-subject">Physics (JEE / NEET)</div>
+          <div class="faculty-tags"><span class="faculty-tag">NIT Graduate</span><span class="faculty-tag">JEE Expert</span><span class="faculty-tag">15+ yrs</span></div>
+          <div class="faculty-exp"><i class="fas fa-star"></i> 15+ Years Experience · Ph.D. Physics</div>
+        </div>
+      </div>
+      <div class="faculty-card reveal">
+        <div class="faculty-img" style="background:linear-gradient(135deg,#1E3250,#2A4A7A);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center;color:rgba(255,255,255,.7)"><i class="fas fa-user-circle" style="font-size:5rem;color:var(--gold-light)"></i></div>
+          <div class="faculty-social">
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+        <div class="faculty-body">
+          <div class="faculty-name">CA Anil Gupta</div>
+          <div class="faculty-subject">Accountancy & CA/CS</div>
+          <div class="faculty-tags"><span class="faculty-tag">Chartered Acc.</span><span class="faculty-tag">CA Expert</span><span class="faculty-tag">18+ yrs</span></div>
+          <div class="faculty-exp"><i class="fas fa-star"></i> 18+ Years Experience · FCA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <div class="results-header reveal">
+      <div class="section-tag" style="margin:0 auto 16px;background:rgba(201,168,76,.15);color:var(--gold-light)"><i class="fas fa-trophy"></i> Hall of Fame</div>
+      <h2 class="section-title">Our <span>Top Achievers</span></h2>
+      <p class="section-sub" style="color:rgba(255,255,255,.55);margin:12px auto 0;text-align:center">Students who turned their dreams into ranks with BGTC guidance</p>
+    </div>
+    <div class="results-track">
+      <div class="results-inner" id="resultsInner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-tag" style="margin:0 auto 16px"><i class="fas fa-quote-left"></i> Success Stories</div>
+      <h2 class="section-title reveal">What Our <span>Students Say</span></h2>
+      <p class="section-sub reveal" style="margin:12px auto 0;text-align:center">Thousands have achieved their goals with BGTC — hear it in their own words.</p>
+    </div>
+    <div class="testimonial-carousel reveal">
+      <div class="testimonial-track" id="testimonialTrack"></div>
+      <div class="carousel-arrows">
+        <button class="c-arrow" onclick="moveCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="c-arrow" onclick="moveCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-tag" style="margin:0 auto 16px"><i class="fas fa-images"></i> Campus Life</div>
+      <h2 class="section-title reveal">Inside <span>BGTC</span></h2>
+      <p class="section-sub reveal" style="margin:12px auto 0;text-align:center">Classrooms, seminars, events and the vibrant learning community at Bandewar's GTC</p>
+    </div>
+    <div class="gallery-grid reveal" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="section-tag" style="background:rgba(201,168,76,.15);color:var(--gold-light)"><i class="fas fa-map-marker-alt"></i> Find Us</div>
+        <h2 class="section-title">Let's Start Your <span>Journey</span></h2>
+        <p class="section-sub" style="color:rgba(255,255,255,.55)">Reach out to us for admissions, counselling, or a free demo class. Our team responds within 24 hours.</p>
+        <div class="contact-details">
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-item-text"><h4>Main Branch</h4><p>Risaldar Lane, Walker Road, Badkas Chowk,<br>Mahal, Nagpur, Maharashtra 440032</p></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-item-text"><h4>Mahal Branch</h4><a href="tel:+919325008360">+91 93250 08360</a></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone-alt"></i></div><div class="contact-item-text"><h4>Dighori Branch</h4><a href="tel:+919326659528">+91 93266 59528</a></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fab fa-facebook-f"></i></div><div class="contact-item-text"><h4>Social</h4><a href="https://www.facebook.com/bandewargtc/" target="_blank">facebook.com/bandewargtc</a></div></div>
+        </div>
+        <div class="branch-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.3!2d79.0845!3d21.1564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDA5JzIzLjAiTiA3OcKwMDUnMDQuMiJF!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="popup-badge">📩 Book a Counselling Session</div>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your full name"/></div>
+          <div class="form-group"><label>Mobile</label><input type="tel" placeholder="+91 number"/></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>School / College</label><input type="text" placeholder="Current institution"/></div>
+        <div class="form-group"><label>Select Course</label>
+          <select>
+            <option value="">Choose a course</option>
+            <option>JEE Mains & Advanced</option>
+            <option>NEET</option>
+            <option>MHT-CET</option>
+            <option>Foundation (8th–10th)</option>
+            <option>11th & 12th Commerce</option>
+            <option>CA / CS</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Select Branch</label>
+          <select>
+            <option>Mahal, Nagpur (Main)</option>
+            <option>Dighori, Nagpur</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message (Optional)</label><textarea placeholder="Any specific questions or requirements?"></textarea></div>
+        <button class="submit-btn" onclick="submitContactForm(this)"><i class="fas fa-paper-plane"></i> <span>Send Enquiry</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-tag" style="margin:0 auto 16px"><i class="fas fa-question-circle"></i> FAQ</div>
+      <h2 class="section-title reveal">Common <span>Questions</span></h2>
+    </div>
+    <div class="faq-grid" id="faqGrid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-logo-wrap">
+        <a href="#hero" class="footer-logo">
+          <div class="footer-logo-icon">B</div>
+          <span class="footer-logo-name">Bandewar's GTC</span>
+        </a>
+        <p class="footer-desc">Nagpur's leading coaching institute since 1985, dedicated to transforming students into successful professionals through expert guidance and academic excellence.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/bandewargtc/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/bandewarsgtcofficial/" target="_blank" class="footer-social"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/919325008360" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+          <a href="tel:+919325008360" class="footer-social"><i class="fas fa-phone"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Courses</div>
+        <ul class="footer-links">
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> JEE Mains & Advanced</a></li>
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> NEET</a></li>
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> MHT-CET</a></li>
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> Foundation 8–10</a></li>
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> 11th & 12th Commerce</a></li>
+          <li><a href="#courses"><i class="fas fa-chevron-right"></i> CA & CS</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#about"><i class="fas fa-chevron-right"></i> About BGTC</a></li>
+          <li><a href="#faculty"><i class="fas fa-chevron-right"></i> Our Faculty</a></li>
+          <li><a href="#results"><i class="fas fa-chevron-right"></i> Student Results</a></li>
+          <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+          <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+          <li><a href="#faq"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="https://maps.google.com" target="_blank"><i class="fas fa-map-marker-alt"></i> Mahal, Nagpur 440032</a></li>
+          <li><a href="tel:+919325008360"><i class="fas fa-phone"></i> +91 93250 08360</a></li>
+          <li><a href="tel:+919326659528"><i class="fas fa-phone-alt"></i> +91 93266 59528</a></li>
+          <li><a href="https://www.facebook.com/bandewargtc/" target="_blank"><i class="fab fa-facebook"></i> /bandewargtc</a></li>
+          <li><a href="https://www.instagram.com/bandewarsgtcofficial/" target="_blank"><i class="fab fa-instagram"></i> @bandewarsgtcofficial</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 <span>Bandewar's Gajanan Tuition Classes</span>. All rights reserved.</p>
+      <p class="footer-copy">Designed with <span style="color:#e74c3c">♥</span> for academic excellence</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating Elements -->
+<div class="whatsapp-fab">
+  <a href="https://wa.me/919325008360" target="_blank" class="wa-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+</div>
+<div class="live-counter"><div class="live-dot"></div><div class="live-text"><span class="live-num" id="liveNum">47</span> students online now</div></div>
+<a href="#" id="brochure-btn" download><i class="fas fa-download"></i> Download Brochure</a>
+
+<!-- Demo Popup -->
+<div id="demo-popup">
+  <div class="popup-card">
+    <button class="popup-close" onclick="closeDemo()">✕</button>
+    <div class="popup-badge">🎓 Free Demo Class</div>
+    <h3 class="popup-title">Book Your Free Demo</h3>
+    <p class="popup-sub">Experience BGTC's teaching quality before you enrol — completely free!</p>
+    <div class="popup-form">
+      <div class="form-group"><label>Your Name</label><input type="text" placeholder="Full name"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Mobile</label><input type="tel" placeholder="+91..."/></div>
+        <div class="form-group"><label>Course</label>
+          <select style="background:var(--off-white);border:1px solid rgba(0,0,0,.1);color:var(--navy);padding:11px 16px;border-radius:10px;width:100%;font-family:inherit;outline:none">
+            <option>JEE</option><option>NEET</option><option>Foundation</option><option>Commerce</option><option>CA/CS</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px" onclick="submitPopup(this)"><i class="fas fa-calendar-check"></i> <span>Confirm Demo Slot</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <img id="lightbox-img" src="" alt="Gallery"/>
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+</div>
+
+<script>
+// ===== DATA =====
+const testimonials = [
+  {text:"BGTC played a crucial role in my JEE preparation. The expert faculty, structured study plan and regular mock tests helped me improve my problem-solving skills. I secured admission to my dream engineering college.",name:"Rohan Sharma",tag:"JEE Aspirant",init:"RS",badge:"AIR 847"},
+  {text:"The NEET coaching at BGTC is outstanding! The faculty made even the toughest concepts easy to understand, and the test series prepared me well for the actual exam. Grateful for all the mentorship.",name:"Sneha Patil",tag:"NEET Topper",init:"SP",badge:"AIR 1209"},
+  {text:"BGTC's Commerce coaching helped me develop a strong understanding of accountancy and business studies. The practical teaching approach and real-world examples made learning interesting and effective.",name:"Akash Verma",tag:"Commerce Student",init:"AV",badge:"92.4%"},
+  {text:"I was struggling with Mathematics before joining BGTC, but the teachers here made it so simple! The regular tests and doubt-solving sessions gave me confidence, and I scored excellent marks in my boards.",name:"Priya Deshmukh",tag:"Class 10 CBSE",init:"PD",badge:"95.6%"},
+  {text:"Clearing CA Foundation seemed tough, but BGTC made it possible. The experienced faculty, structured course material, and mock tests prepared me perfectly. I couldn't have done it without their support!",name:"Ankit Joshi",tag:"CA Foundation",init:"AJ",badge:"Cleared"}
+];
+
+const rankCards = [
+  {name:"Aryan Tiwari",score:"99.2%",exam:"JEE Mains",college:"IIT Bombay",year:"2025",rank:"AIR 312"},
+  {name:"Kavya Nair",score:"720/720",exam:"NEET",college:"AIIMS Delhi",year:"2025",rank:"AIR 88"},
+  {name:"Ritesh Desai",score:"98.4%",exam:"HSC Board",college:"VJTI Mumbai",year:"2025",rank:"State 4th"},
+  {name:"Shreya More",score:"97.8%",exam:"Commerce",college:"SRCC Delhi",year:"2025",rank:"Top 10"},
+  {name:"Aman Singh",score:"99.1%",exam:"JEE Adv",college:"IIT Delhi",year:"2024",rank:"AIR 185"},
+  {name:"Pooja Kulkarni",score:"695/720",exam:"NEET",college:"Grant Med. Mumbai",year:"2024",rank:"AIR 220"},
+  {name:"Dev Shukla",score:"98.6%",exam:"MHT-CET",college:"COEP Pune",year:"2024",rank:"State 6th"},
+  {name:"Neha Wani",score:"Cleared",exam:"CA Foundation",college:"ICAI",year:"2025",rank:"1st Attempt"}
+];
+
+const faqs = [
+  {q:"What courses does BGTC offer?",a:"BGTC offers coaching for JEE Mains & Advanced, NEET, MHT-CET, Foundation (8th–10th State & CBSE), 11th & 12th Commerce, CA Foundation/Inter and CS Foundation/Executive."},
+  {q:"Where are BGTC's branches located?",a:"BGTC has two branches: the Main Branch at Risaldar Lane, Mahal, Nagpur and a second branch at Dighori, Nagpur. Both are equipped with modern classrooms and labs."},
+  {q:"How can I book a free demo class?",a:"Click the 'Free Demo' button on this page, fill in your details and our counsellor will contact you within 24 hours to schedule your complimentary demo session."},
+  {q:"Does BGTC offer scholarships?",a:"Yes! BGTC offers merit-based scholarships of up to 70% on course fees for deserving students in JEE and NEET programmes. Contact our admissions team for scholarship eligibility criteria."},
+  {q:"What is the batch size at BGTC?",a:"We maintain small batch sizes of 25–35 students to ensure personalised attention, regular doubt-solving and individual performance tracking for every student."},
+  {q:"Are study materials provided?",a:"Yes, BGTC provides comprehensive printed study materials, notes, past papers and practice sets for all courses. Materials are updated annually to reflect the latest exam patterns."},
+];
+
+const galleryItems = [
+  {label:"JEE Classroom Session",color:"#1A3A6C"},
+  {label:"NEET Biology Lab",color:"#2255CC"},
+  {label:"Faculty Seminar 2025",color:"#0A2A5C"},
+  {label:"Award Ceremony",color:"#16294A"},
+  {label:"Student Workshop",color:"#1E3A7A"},
+  {label:"Annual Day 2024",color:"#0D2040"},
+];
+
+const marqueeItems = [
+  "🏆 40+ Years of Excellence","🎓 40,000+ Students Trained","⭐ 98% Pass Rate","🏫 2 Centers in Nagpur","📚 Expert Faculty Team","🔬 JEE · NEET · Foundation","💼 Commerce · CA · CS","🎯 Free Demo Available","📞 Call +91 93250 08360"
+];
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',()=>{
+  buildMarquee();
+  buildResults();
+  buildTestimonials();
+  buildGallery();
+  buildFAQ();
+  initFloatingIcons();
+  initParticles();
+  initCountdown();
+  initScrollAnimations();
+  initDarkMode();
+  initNavbar();
+  initCarousel();
+  liveCounter();
+  setTimeout(()=>openDemo(),5000);
+});
+
+function buildMarquee(){
+  const t=document.getElementById('marqueeTrack');
+  const doubled=[...marqueeItems,...marqueeItems];
+  t.innerHTML=doubled.map(i=>`<div class="marquee-item"><i class="fas fa-diamond" style="font-size:.5rem"></i>${i}</div>`).join('');
+}
+
+function buildResults(){
+  const inner=document.getElementById('resultsInner');
+  const doubled=[...rankCards,...rankCards];
+  inner.innerHTML=doubled.map(r=>`
+    <div class="rank-card">
+      <div class="rank-badge"><i class="fas fa-trophy"></i> ${r.rank}</div>
+      <div class="rank-photo" style="background:linear-gradient(135deg,var(--royal),var(--cobalt));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:900;font-size:1.1rem">${r.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div class="rank-name">${r.name}</div>
+      <div class="rank-score">${r.score}</div>
+      <div class="rank-college">${r.exam}<br>${r.college}</div>
+      <div class="rank-year">Batch ${r.year}</div>
+    </div>`).join('');
+}
+
+function buildTestimonials(){
+  const track=document.getElementById('testimonialTrack');
+  const dots=document.getElementById('carouselDots');
+  track.innerHTML=testimonials.map((t,i)=>`
+    <div class="testimonial-slide">
+      <div class="testimonial-card">
+        <div class="testimonial-badge">${t.badge}</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">${t.text}</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">${t.init}</div>
+          <div><div class="author-name">${t.name}</div><div class="author-tag">${t.tag}</div></div>
+        </div>
+      </div>
+    </div>`).join('');
+  dots.innerHTML=testimonials.map((_,i)=>`<div class="dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
+}
+
+let carouselIdx=0,carouselTimer;
+function moveCarousel(dir){
+  carouselIdx=(carouselIdx+dir+testimonials.length)%testimonials.length;
+  updateCarousel();
+}
+function goToSlide(i){carouselIdx=i;updateCarousel();}
+function updateCarousel(){
+  const track=document.getElementById('testimonialTrack');
+  const w=track.querySelector('.testimonial-slide')?.offsetWidth||0;
+  const gap=24;
+  track.style.transform=`translateX(-${carouselIdx*(w+gap)}px)`;
+  track.style.transition='transform .5s cubic-bezier(0.23,1,0.32,1)';
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===carouselIdx));
+  clearTimeout(carouselTimer);
+  carouselTimer=setTimeout(()=>moveCarousel(1),5000);
+}
+function initCarousel(){
+  document.getElementById('testimonialTrack').style.transition='transform .5s cubic-bezier(0.23,1,0.32,1)';
+  carouselTimer=setTimeout(()=>moveCarousel(1),5000);
+}
+
+function buildGallery(){
+  const grid=document.getElementById('galleryGrid');
+  grid.innerHTML=galleryItems.map((g,i)=>`
+    <div class="gallery-item" onclick="openLightbox('${g.color}','${g.label}')">
+      <div class="gallery-img" style="background:linear-gradient(135deg,${g.color},${g.color}99);min-height:${i===0?'380px':'180px'};display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center;color:rgba(255,255,255,.4)"><i class="fas fa-image" style="font-size:2.5rem"></i></div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">${g.label}</span></div>
+    </div>`).join('');
+}
+
+function openLightbox(color,label){
+  const lb=document.getElementById('lightbox');
+  const img=document.getElementById('lightbox-img');
+  // Use a placeholder since no real images
+  img.style='width:600px;height:400px;object-fit:cover;background:linear-gradient(135deg,'+color+','+color+'99);border-radius:12px;display:flex;align-items:center;justify-content:center';
+  img.alt=label;
+  lb.classList.add('open');
+}
+function closeLightbox(e){
+  if(!e||e.target.id==='lightbox'||e.target.classList.contains('lightbox-close'))
+    document.getElementById('lightbox').classList.remove('open');
+}
+
+function buildFAQ(){
+  const grid=document.getElementById('faqGrid');
+  grid.innerHTML=faqs.map((f,i)=>`
+    <div class="faq-item" onclick="toggleFAQ(this)">
+      <div class="faq-q">${f.q} <i class="fas fa-plus"></i></div>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>`).join('');
+}
+function toggleFAQ(el){
+  const wasOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!wasOpen)el.classList.add('open');
+}
+
+function initFloatingIcons(){
+  const icons=['📚','🔬','📐','🏆','⚗️','📊','🧬','🔭','✏️','🎓'];
+  const container=document.getElementById('floatingIcons');
+  for(let i=0;i<14;i++){
+    const el=document.createElement('div');
+    el.classList.add('fi');
+    el.textContent=icons[i%icons.length];
+    el.style.left=Math.random()*100+'%';
+    el.style.animationDuration=(10+Math.random()*15)+'s';
+    el.style.animationDelay=(Math.random()*-20)+'s';
+    el.style.fontSize=(0.9+Math.random()*1.2)+'rem';
+    container.appendChild(el);
+  }
+}
+
+function initParticles(){
+  const c=document.getElementById('statsParticles');
+  if(!c)return;
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');
+    p.classList.add('particle');
+    p.style.left=Math.random()*100+'%';
+    p.style.top=Math.random()*100+'%';
+    p.style.setProperty('--tx',(Math.random()*80-40)+'px');
+    p.style.setProperty('--ty',(Math.random()*80-40)+'px');
+    p.style.animationDuration=(3+Math.random()*5)+'s';
+    p.style.animationDelay=(Math.random()*-6)+'s';
+    c.appendChild(p);
+  }
+}
+
+function initScrollAnimations(){
+  const counters=document.querySelectorAll('.counter');
+  const rings=document.querySelectorAll('.stat-ring-fill');
+  const reveals=document.querySelectorAll('.reveal');
+  let countersStarted=false,ringsStarted=false;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting)e.target.classList.add('visible');
+    });
+  },{threshold:.12});
+  reveals.forEach(r=>obs.observe(r));
+  const statsObs=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&!countersStarted){
+      countersStarted=true;
+      counters.forEach(c=>{
+        const target=+c.dataset.target;
+        const step=target/60;
+        let current=0;
+        const timer=setInterval(()=>{
+          current+=step;
+          if(current>=target){current=target;clearInterval(timer);}
+          c.textContent=Math.floor(current);
+        },30);
+      });
+      if(!ringsStarted){ringsStarted=true;
+        rings.forEach(r=>{
+          const pct=+r.dataset.pct/100;
+          const circ=2*Math.PI*35;
+          r.style.strokeDashoffset=circ-(circ*pct);
+        });
+      }
+    }
+  },{threshold:.3});
+  const statsSection=document.getElementById('stats');
+  if(statsSection)statsObs.observe(statsSection);
+}
+
+function initCountdown(){
+  const target=new Date('2027-01-20T09:00:00');
+  function update(){
+    const now=new Date();
+    const diff=target-now;
+    if(diff<=0){document.getElementById('countdown').style.display='none';return;}
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-days').textContent=String(d).padStart(3,'0');
+    document.getElementById('cd-hrs').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-min').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-sec').textContent=String(s).padStart(2,'0');
+  }
+  update();setInterval(update,1000);
+}
+
+function initNavbar(){
+  window.addEventListener('scroll',()=>{
+    document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+  });
+  document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.add('open'));
+  document.getElementById('mobile-close').addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open'));
+}
+function closeMobileMenu(){document.getElementById('mobile-menu').classList.remove('open');}
+
+function initDarkMode(){
+  const btn=document.getElementById('darkToggle');
+  const pref=localStorage.getItem('bgtc-dark');
+  if(pref==='1'){document.body.classList.add('dark');btn.innerHTML='<i class="fas fa-sun"></i>';}
+  btn.addEventListener('click',()=>{
+    document.body.classList.toggle('dark');
+    const dark=document.body.classList.contains('dark');
+    btn.innerHTML=dark?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+    localStorage.setItem('bgtc-dark',dark?'1':'0');
+  });
+}
+
+document.getElementById('close-banner').addEventListener('click',()=>{
+  document.getElementById('scholarship-banner').style.display='none';
+  document.getElementById('navbar').style.top='0';
+});
+
+function openDemo(){document.getElementById('demo-popup').classList.add('open');}
+function closeDemo(){document.getElementById('demo-popup').classList.remove('open');}
+document.getElementById('demo-popup').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDemo();});
+
+function liveCounter(){
+  const el=document.getElementById('liveNum');
+  setInterval(()=>{
+    const n=Math.floor(35+Math.random()*30);
+    el.textContent=n;
+  },5000);
+}
+
+function submitHeroForm(btn){
+  btn.innerHTML='<i class="fas fa-check"></i> <span>Request Sent!</span>';
+  btn.style.background='linear-gradient(135deg,#2ECC71,#27AE60)';
+  setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> <span>Book My Seat</span>';btn.style.background='';},3000);
+}
+function submitContactForm(btn){
+  btn.innerHTML='<i class="fas fa-check"></i> <span>Message Sent! We\'ll call soon.</span>';
+  btn.style.background='linear-gradient(135deg,#2ECC71,#27AE60)';
+  setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> <span>Send Enquiry</span>';btn.style.background='';},3500);
+}
+function submitPopup(btn){
+  btn.innerHTML='<i class="fas fa-check"></i> <span>Demo Booked! 🎉</span>';
+  btn.style.background='linear-gradient(135deg,#2ECC71,#27AE60)';
+  setTimeout(()=>{closeDemo();btn.innerHTML='<i class="fas fa-calendar-check"></i> <span>Confirm Demo Slot</span>';btn.style.background='';},2500);
+}
+</script>
+</body>
+</html>
