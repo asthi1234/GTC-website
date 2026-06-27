@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Brew &amp; Bloom Café premium menu — quick view, wishlist, and add to cart." />
+  <title>Menu | Brew &amp; Bloom</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* ── Page-specific styles ── */
+    .icon-count{
+      position:absolute; top:-8px; right:-8px;
+      min-width:18px; height:18px; padding:0 5px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:999px;
+      background:rgba(212,165,116,.95);
+      color:#25160e; font-weight:800; font-size:.75rem;
+      border:1px solid rgba(250,245,237,.22);
+    }
+    .profile{ position:relative; }
+    .dropdown{
+      position:absolute; right:0; top:50px;
+      width:min(220px, 80vw);
+      display:none;
+      border-radius:18px; overflow:hidden;
+      border:1px solid rgba(212,165,116,.30);
+      background:rgba(17,10,7,.85);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:var(--shadow2);
+      z-index:200;
+    }
+    .dropdown.open{ display:block; }
+    .dropdown a, .dropdown button{
+      width:100%; display:flex; align-items:center; justify-content:space-between;
+      padding:13px 16px; border:0; background:transparent;
+      color:rgba(250,245,237,.92); cursor:pointer; font-weight:600; font-size:.95rem;
+      text-decoration:none;
+    }
+    .dropdown a:hover, .dropdown button:hover{ background:rgba(250,245,237,.07); }
+
+    /* Mobile nav drawer */
+    .mobile-nav{
+      position:fixed; inset:0; z-index:300;
+      background:rgba(0,0,0,.6);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:flex-start; justify-content:flex-end;
+    }
+    .mobile-nav.open{ display:flex; }
+    .mobile-nav-panel{
+      width:min(280px, 85vw); height:100%;
+      background:linear-gradient(180deg,rgba(44,24,16,.98),rgba(25,14,9,.98));
+      border-left:1px solid rgba(212,165,116,.25);
+      padding:24px 20px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .mobile-nav-panel a, .mobile-nav-panel button{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-radius:16px;
+      border:1px solid rgba(212,165,116,.18);
+      background:rgba(250,245,237,.04);
+      color:rgba(250,245,237,.92); font-weight:600;
+      text-decoration:none; font:inherit; cursor:pointer;
+      transition:background .18s, border-color .18s;
+    }
+    .mobile-nav-panel a:hover, .mobile-nav-panel button:hover{
+      background:rgba(250,245,237,.08);
+      border-color:rgba(212,165,116,.40);
+    }
+    .mobile-nav-close{
+      align-self:flex-end; margin-bottom:8px;
+      background:transparent; border:0;
+      color:rgba(250,245,237,.7); font-size:1.4rem; cursor:pointer;
+    }
+
+    /* Category filter bar */
+    .cat-bar{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .cat-btn{
+      padding:8px 16px; border-radius:999px;
+      border:1px solid rgba(212,165,116,.25);
+      background:rgba(250,245,237,.05);
+      color:rgba(250,245,237,.88);
+      font:inherit; font-size:.88rem; font-weight:600;
+      cursor:pointer;
+      transition:background .18s, border-color .18s, color .18s;
+    }
+    .cat-btn:hover{ background:rgba(250,245,237,.09); border-color:rgba(212,165,116,.45); }
+    .cat-btn.active{
+      background:rgba(212,165,116,.22);
+      border-color:rgba(212,165,116,.75);
+      color:var(--white);
+    }
+
+    /* Mobile search bar (below navbar on mobile) */
+    .mobile-search{
+      display:none;
+      padding:10px 0 0;
+    }
+    .mobile-search .search{
+      width:100%; border-radius:16px;
+    }
+    .mobile-search .search input{
+      width:100%; max-width:none;
+    }
+    @media(max-width:880px){
+      .mobile-search{ display:block; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════ NAVBAR ══════════════════ -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner glass">
+
+        <div class="brand" role="banner">
+    <img src="image/logo.png" alt="Brew & Bloom Café Logo" class="logo">
+
+    <div class="brand-text">
+        <h1 class="h1">Brew &amp; Bloom</h1>
+        <span>Premium Café</span>
+    </div>
+</div>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html" style="border-color:rgba(212,165,116,.45);background:rgba(250,245,237,.06);">Menu</a>
+          <a href="flipmenu.html">📖 Flip Menu</a>
+          <a href="reserve.html">Reserve</a>
+        </nav>
+
+        <!-- Desktop search -->
+        <div class="search glass" title="Search dishes">
+          <span aria-hidden="true">🔎</span>
+          <input id="menuSearch" data-menu-search placeholder="Search pizza, coffee…" autocomplete="off" aria-label="Search menu" />
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <!-- Cart -->
+          <button class="icon-btn ripple" id="cartBtn" aria-label="Open cart" style="position:relative;">
+            🛒
+            <span class="icon-count" data-cart-count>0</span>
+          </button>
+
+          <!-- Profile / dropdown -->
+          <div class="profile">
+            <button class="icon-btn ripple" id="profileBtn" aria-label="Account menu">👤</button>
+            <div class="dropdown" id="profileDropdown">
+              <a href="index.html"><span>🏠 Home</span><span>→</span></a>
+              <a href="checkout.html"><span>🛍️ Checkout</span><span>→</span></a>
+              <a href="reserve.html"><span>🪑 Reservations</span><span>→</span></a>
+              <button type="button" id="signOutBtn"><span>🚪 Sign out</span><span>⟂</span></button>
+            </div>
+          </div>
+
+          <!-- Hamburger (mobile only) -->
+          <button class="hamburger icon-btn ripple" id="hamburgerBtn" aria-label="Open navigation menu">☰</button>
+        </div>
+
+      </div>
+
+      <!-- Mobile search (shown below navbar on small screens) -->
+      <div class="mobile-search container">
+        <div class="search glass" style="border-radius:16px; padding:10px 14px;">
+          <span aria-hidden="true">🔎</span>
+          <input id="mobileSearch" placeholder="Search dishes…" autocomplete="off" aria-label="Search menu (mobile)" />
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ══════════════════ MOBILE NAV ══════════════════ -->
+  <div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Navigation menu">
+    <div class="mobile-nav-panel">
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close navigation">✕</button>
+      <a href="index.html"><span>🏠 Home</span><span>→</span></a>
+      <a href="menu.html" style="border-color:rgba(212,165,116,.45);"><span>🍽️ Menu</span><span>→</span></a>
+      <a href="reserve.html"><span>🪑 Reserve Table</span><span>→</span></a>
+      <a href="checkout.html"><span>🛍️ Checkout</span><span>→</span></a>
+      <button type="button" id="mobileSignOut"><span>🚪 Sign out</span><span>⟂</span></button>
+    </div>
+  </div>
+
+  <!-- ══════════════════ CART DRAWER ══════════════════ -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="drawer glass" id="cartDrawer" aria-label="Shopping cart">
+    <div class="drawer-header">
+      <div style="font-weight:900; font-size:1.05rem;">🛒 Your Cart</div>
+      <button class="icon-btn ripple" id="cartCloseBtn" aria-label="Close cart">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="small muted">Add premium items &amp; adjust quantities.</div>
+      <div class="hr"></div>
+
+      <!-- app.js renders cart items here -->
+      <div data-cart-items></div>
+
+      <div class="hr"></div>
+
+      <!-- Coupon -->
+      <div class="field">
+        <div class="label">Coupon code</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input class="input" data-coupon placeholder="GOLD10 / BLOOM20 / WELCOME50" style="flex:1;" />
+          <button class="btn btn-ghost ripple" data-apply-coupon style="padding:11px 14px; white-space:nowrap;">Apply</button>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <!-- Totals -->
+      <div class="line"><div class="small muted">Subtotal</div><div class="small muted" data-t-subtotal>₹ 0</div></div>
+      <div class="line"><div class="small muted">GST (5%)</div><div class="small muted" data-t-gst>₹ 0</div></div>
+      <div class="line"><div class="small muted">Delivery</div><div class="small muted" data-t-delivery>₹ 0</div></div>
+      <div class="line"><div class="small muted">Platform fee</div><div class="small muted" data-t-platform>₹ 0</div></div>
+      <div class="line"><div class="small muted">Packaging</div><div class="small muted" data-t-packaging>₹ 0</div></div>
+      <div class="line"><div class="small muted" style="color:rgba(34,197,94,.9);">Discount</div><div class="small muted" style="color:rgba(34,197,94,.9);" data-t-discount>₹ 0</div></div>
+
+      <div class="hr"></div>
+      <div class="line">
+        <div style="font-weight:700;">Grand Total</div>
+        <div class="total" data-t-grand>₹ 0</div>
+      </div>
+
+      <a class="btn btn-primary ripple" href="checkout.html"
+         style="width:100%; justify-content:center; margin-top:16px; font-size:1rem; padding:14px;">
+        Proceed to Checkout →
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════════════ COFFEE BEANS CANVAS ══════════════════ -->
+  <canvas id="coffeeCanvas" style="
+    position:fixed; inset:0; width:100%; height:100%;
+    pointer-events:none; z-index:1; opacity:0;
+    transition:opacity .6s ease;
+  "></canvas>
+
+  <!-- ══════════════════ QUICK-VIEW MODAL ══════════════════ -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal glass" id="quickModal"></div>
+
+  <!-- ══════════════════ MAIN ══════════════════ -->
+  <main id="menu" class="section" style="padding-top:20px;">
+    <div class="container">
+
+      <div class="small muted reveal">Premium café ordering</div>
+      <div class="h2 reveal" style="margin-top:6px;">Browse the menu</div>
+      <p class="small muted reveal" style="margin-top:8px; line-height:1.65; max-width:560px;">
+        Quick View, Wishlist, and Add to Cart — all in one flow.
+      </p>
+
+      <div class="hr" style="margin-top:18px;"></div>
+
+      <!-- Hidden select that app.js reads for active category -->
+      <select data-active-cat style="display:none;">
+        <option value="all">All</option>
+      </select>
+
+      <!-- Category filter pills -->
+      <div class="cat-bar" id="catBar" role="group" aria-label="Filter by category">
+        <button class="cat-btn active" data-cat="all">🍽️ All</button>
+        <!-- more added by JS -->
+      </div>
+
+      <!-- Dish grid — rendered by app.js -->
+      <div class="dish-grid" style="margin-top:22px;" data-menu-grid></div>
+
+    </div>
+  </main>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted" style="text-align:center;">
+        © <span id="year"></span> Brew &amp; Bloom — Demo UI
+      </div>
+    </div>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    'use strict';
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ── Cart drawer ───────────────────────────────── */
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const cartDrawer    = document.getElementById('cartDrawer');
+    const cartBtn       = document.getElementById('cartBtn');
+    const cartCloseBtn  = document.getElementById('cartCloseBtn');
+
+    function openCart() {
+      drawerOverlay.classList.add('open');
+      cartDrawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (window.BB) window.BB.renderCartDrawer?.();
+    }
+    function closeCart() {
+      drawerOverlay.classList.remove('open');
+      cartDrawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    cartBtn.addEventListener('click', openCart);
+    cartCloseBtn.addEventListener('click', closeCart);
+    drawerOverlay.addEventListener('click', closeCart);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+    /* ── Profile dropdown ──────────────────────────── */
+    const profileBtn      = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => profileDropdown.classList.remove('open'));
+
+    /* ── Sign out ──────────────────────────────────── */
+    function signOut() {
+      ['bb_cart_v1','bb_favs_v1','bb_orderDraft_v1','bb_lastOrder_v1','bb_lastReservation_v1']
+        .forEach(k => localStorage.removeItem(k));
+      window.location.href = 'index.html';
+    }
+    document.getElementById('signOutBtn').addEventListener('click', signOut);
+    document.getElementById('mobileSignOut').addEventListener('click', signOut);
+
+    /* ── Mobile nav ────────────────────────────────── */
+    const mobileNav      = document.getElementById('mobileNav');
+    const hamburgerBtn   = document.getElementById('hamburgerBtn');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+
+    function openMobileNav()  { mobileNav.classList.add('open');  document.body.style.overflow = 'hidden'; }
+    function closeMobileNav() { mobileNav.classList.remove('open'); document.body.style.overflow = ''; }
+
+    hamburgerBtn.addEventListener('click', openMobileNav);
+    mobileNavClose.addEventListener('click', closeMobileNav);
+    mobileNav.addEventListener('click', e => { if (e.target === mobileNav) closeMobileNav(); });
+
+    /* ── Search ────────────────────────────────────── */
+    const desktopSearch = document.getElementById('menuSearch');
+    const mobileSearch  = document.getElementById('mobileSearch');
+
+    function onSearch(val) {
+      desktopSearch.value = val;
+      mobileSearch.value  = val;
+      if (window.BB?.renderMenuCards) window.BB.renderMenuCards();
+    }
+    desktopSearch.addEventListener('input', () => onSearch(desktopSearch.value));
+    mobileSearch.addEventListener('input',  () => onSearch(mobileSearch.value));
+
+    /* ── Coffee beans canvas animation ────────────── */
+    (function () {
+      const canvas = document.getElementById('coffeeCanvas');
+      const ctx    = canvas.getContext('2d');
+      let   raf    = null;
+      let   active = false;
+      const beans  = [];
+      const BEAN_COUNT = 38;
+
+      // Resize canvas to fill viewport
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // Draw a single coffee bean shape
+      function drawBean(x, y, r, angle, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.globalAlpha = alpha;
+
+        // Outer bean ellipse
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r * 1.55, r, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#6B3A2A';
+        ctx.fill();
+
+        // Lighter highlight on top half
+        const grad = ctx.createRadialGradient(-r * .3, -r * .3, r * .1, 0, 0, r * 1.6);
+        grad.addColorStop(0, 'rgba(180,100,55,.55)');
+        grad.addColorStop(1, 'rgba(60,25,10,0)');
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r * 1.55, r, 0, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Centre crease line
+        ctx.beginPath();
+        ctx.moveTo(-r * 1.3, 0);
+        ctx.bezierCurveTo(-r * .6, -r * .55, r * .6, -r * .55, r * 1.3, 0);
+        ctx.bezierCurveTo( r * .6,  r * .55, -r * .6,  r * .55, -r * 1.3, 0);
+        ctx.fillStyle = 'rgba(40,15,5,.65)';
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      // Spawn beans
+      function spawnBeans() {
+        beans.length = 0;
+        for (let i = 0; i < BEAN_COUNT; i++) {
+          beans.push({
+            x      : Math.random() * canvas.width,
+            y      : Math.random() * canvas.height * 1.2 - canvas.height * .1,
+            r      : 5 + Math.random() * 9,          // radius 5–14
+            angle  : Math.random() * Math.PI * 2,
+            spin   : (Math.random() - .5) * .018,     // rotation speed
+            speedX : (Math.random() - .5) * .55,      // gentle horizontal drift
+            speedY : .45 + Math.random() * .9,        // fall speed
+            alpha  : .18 + Math.random() * .52,       // opacity
+            wobble : Math.random() * Math.PI * 2,     // phase offset for sway
+          });
+        }
+      }
+
+      // Animation loop
+      function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        beans.forEach(b => {
+          // Gentle horizontal sway
+          b.wobble += .018;
+          b.x      += b.speedX + Math.sin(b.wobble) * .6;
+          b.y      += b.speedY;
+          b.angle  += b.spin;
+
+          // Wrap around edges
+          if (b.y > canvas.height + 20)  b.y = -20;
+          if (b.x > canvas.width  + 20)  b.x = -20;
+          if (b.x < -20)                 b.x = canvas.width + 20;
+
+          drawBean(b.x, b.y, b.r, b.angle, b.alpha);
+        });
+
+        if (active) raf = requestAnimationFrame(loop);
+      }
+
+      // Public: start
+      window.startCoffeeBeans = function () {
+        if (active) return;
+        active = true;
+        resize();
+        spawnBeans();
+        canvas.style.opacity = '.85';
+        raf = requestAnimationFrame(loop);
+      };
+
+      // Public: stop
+      window.stopCoffeeBeans = function () {
+        active = false;
+        canvas.style.opacity = '0';
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        // clear after fade-out
+        setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 650);
+      };
+    })();
+
+    /* ── Hook into category selection ─────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const catBar    = document.getElementById('catBar');
+      const hiddenCat = document.querySelector('[data-active-cat]');
+
+      function setCategory(id) {
+        hiddenCat.value = id;
+        catBar.querySelectorAll('.cat-btn').forEach(b =>
+          b.classList.toggle('active', b.dataset.cat === id));
+
+        // Coffee beans animation
+        if (id === 'coffee') window.startCoffeeBeans?.();
+        else                 window.stopCoffeeBeans?.();
+
+        if (window.BB?.renderMenuCards) window.BB.renderMenuCards();
+      }
+
+      catBar.querySelector('[data-cat="all"]').addEventListener('click', () => setCategory('all'));
+
+      // Build category pills from data.js + populate hidden select
+      (window.BREWBLOOM_CATEGORIES || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id; opt.textContent = c.name;
+        hiddenCat.appendChild(opt);
+
+        const btn = document.createElement('button');
+        btn.className   = 'cat-btn';
+        btn.dataset.cat = c.id;
+        btn.textContent = `${c.emoji} ${c.name}`;
+        btn.addEventListener('click', () => setCategory(c.id));
+        catBar.appendChild(btn);
+      });
+
+      // Now render — data.js + app.js both loaded, pills + hidden select ready
+      if (window.BB?.renderMenuCards) window.BB.renderMenuCards();
+    });
+  </script>
+
+</body>
+</html>

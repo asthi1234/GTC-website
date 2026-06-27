@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Brew &amp; Bloom</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* ── Layout ── */
+    body { overflow-x: hidden; }
+    .admin-wrap {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    @media(max-width:760px){ .admin-wrap{ grid-template-columns:1fr; } }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky; top: 0; height: 100vh;
+      background: linear-gradient(180deg, rgba(25,14,9,.98), rgba(44,24,16,.96));
+      border-right: 1px solid rgba(212,165,116,.18);
+      display: flex; flex-direction: column;
+      padding: 24px 0; gap: 4px; overflow-y: auto;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(212,165,116,.15);
+      margin-bottom: 8px;
+    }
+    .sidebar-logo img { width: 38px; height: 38px; border-radius: 12px; object-fit: contain; }
+    .sidebar-logo-text { font-weight: 900; font-size: .95rem; color: var(--cream); }
+    .sidebar-logo-sub  { font-size: .75rem; color: var(--accent); }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; cursor: pointer;
+      border-left: 3px solid transparent;
+      color: rgba(250,245,237,.65); font-weight: 600; font-size: .92rem;
+      transition: all .18s; background: transparent; border-top: 0; border-right: 0; border-bottom: 0;
+      font: inherit; width: 100%; text-align: left;
+    }
+    .nav-item:hover { color: var(--cream); background: rgba(250,245,237,.05); }
+    .nav-item.active {
+      color: var(--accent); border-left-color: var(--accent);
+      background: rgba(212,165,116,.08);
+    }
+    .nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+    .sidebar-section {
+      padding: 14px 20px 6px;
+      font-size: .72rem; text-transform: uppercase;
+      letter-spacing: .1em; color: rgba(212,165,116,.45); font-weight: 700;
+    }
+
+    /* ── Main content ── */
+    .admin-main { padding: 28px; overflow-y: auto; }
+    .admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .admin-header h1 { font-size: 1.6rem; font-weight: 900; }
+
+    /* ── Stats cards ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+    .stat-card {
+      padding: 20px; border-radius: 20px;
+      border: 1px solid rgba(212,165,116,.22);
+      background: rgba(250,245,237,.05);
+    }
+    .stat-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .stat-val  { font-size: 1.8rem; font-weight: 900; color: var(--white); }
+    .stat-label{ font-size: .82rem; opacity: .7; margin-top: 4px; }
+    .stat-trend{ font-size: .78rem; color: rgba(34,197,94,.85); margin-top: 6px; }
+
+    /* ── Section card ── */
+    .section-card {
+      border-radius: 20px;
+      border: 1px solid rgba(212,165,116,.18);
+      background: rgba(250,245,237,.04);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .section-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(212,165,116,.12);
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 800; font-size: 1rem;
+    }
+
+    /* ── Table ── */
+    .admin-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .admin-table th {
+      padding: 12px 16px; text-align: left;
+      border-bottom: 1px solid rgba(212,165,116,.15);
+      color: var(--accent); font-weight: 700; font-size: .78rem;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .admin-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(212,165,116,.08);
+      color: rgba(250,245,237,.85);
+    }
+    .admin-table tr:last-child td { border-bottom: 0; }
+    .admin-table tr:hover td { background: rgba(250,245,237,.03); }
+
+    /* ── Status badge ── */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px; font-size: .75rem; font-weight: 700;
+    }
+    .status-confirmed { background: rgba(34,197,94,.15); color: rgba(34,197,94,.9); border: 1px solid rgba(34,197,94,.3); }
+    .status-pending   { background: rgba(250,204,21,.12); color: rgba(250,204,21,.9); border: 1px solid rgba(250,204,21,.3); }
+    .status-cancelled { background: rgba(244,63,94,.12);  color: rgba(244,63,94,.9);  border: 1px solid rgba(244,63,94,.3); }
+
+    /* ── Menu manager ── */
+    .menu-item-row {
+      display: grid; grid-template-columns: 54px 1fr auto auto;
+      gap: 14px; align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(212,165,116,.08);
+    }
+    .menu-item-row:last-child { border-bottom: 0; }
+    .menu-item-row img { width: 54px; height: 54px; border-radius: 12px; object-fit: cover; }
+    .menu-edit-input {
+      background: rgba(0,0,0,.2); border: 1px solid rgba(212,165,116,.2);
+      border-radius: 10px; padding: 6px 10px; color: var(--cream);
+      font: inherit; font-size: .85rem; width: 90px; text-align: center;
+    }
+    .toggle-avail {
+      width: 42px; height: 24px; border-radius: 999px;
+      border: 1px solid rgba(212,165,116,.3);
+      background: rgba(250,245,237,.08);
+      cursor: pointer; position: relative; transition: background .2s;
+      flex-shrink: 0;
+    }
+    .toggle-avail.on { background: rgba(34,197,94,.3); border-color: rgba(34,197,94,.5); }
+    .toggle-avail::after {
+      content: ""; position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: rgba(250,245,237,.6); transition: left .2s, background .2s;
+    }
+    .toggle-avail.on::after { left: 21px; background: rgba(34,197,94,.9); }
+
+    /* ── PIN screen ── */
+    .pin-screen {
+      position: fixed; inset: 0; z-index: 999;
+      background: linear-gradient(135deg, #1a0f0a, #2c1810);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pin-box {
+      padding: 40px; border-radius: 26px;
+      border: 1px solid rgba(212,165,116,.3);
+      background: rgba(250,245,237,.06);
+      backdrop-filter: blur(16px);
+      text-align: center; max-width: 360px; width: 90%;
+    }
+    .pin-dots {
+      display: flex; justify-content: center; gap: 12px; margin: 24px 0;
+    }
+    .pin-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(212,165,116,.4);
+      background: transparent; transition: background .2s;
+    }
+    .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+    .pin-pad {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 8px;
+    }
+    .pin-key {
+      padding: 16px; border-radius: 16px;
+      border: 1px solid rgba(212,165,116,.2);
+      background: rgba(250,245,237,.06);
+      font-size: 1.2rem; font-weight: 700; color: var(--cream);
+      cursor: pointer; font: inherit; transition: background .15s;
+    }
+    .pin-key:hover { background: rgba(250,245,237,.12); }
+    .pin-key.del { color: rgba(244,63,94,.8); }
+    .pin-error { color: rgba(244,63,94,.85); font-size: .85rem; margin-top: 12px; min-height: 20px; }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 16px 20px 0;
+    }
+    .tab-btn {
+      padding: 8px 16px; border-radius: 999px;
+      border: 1px solid rgba(212,165,116,.2);
+      background: transparent; color: rgba(250,245,237,.65);
+      font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+      transition: all .18s;
+    }
+    .tab-btn.active {
+      background: rgba(212,165,116,.18); border-color: rgba(212,165,116,.6);
+      color: var(--accent);
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      padding: 40px; text-align: center;
+      color: rgba(250,245,237,.4); font-size: .9rem;
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:760px){
+      .sidebar{ position:fixed; left:-240px; z-index:100; transition:left .3s; width:240px; }
+      .sidebar.open{ left:0; }
+      .admin-main{ padding:16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ PIN LOGIN ══════════ -->
+<div class="pin-screen" id="pinScreen">
+  <div class="pin-box">
+    <img src="./image/logo.png" alt="logo"
+         style="width:56px;height:56px;object-fit:contain;border-radius:14px;margin-bottom:14px;" />
+    <div class="h2" style="font-size:1.3rem;">Admin Access</div>
+    <div class="small muted" style="margin-top:6px;">Enter your 4-digit PIN to continue</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot" id="d0"></div>
+      <div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div>
+      <div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" data-k="1">1</button>
+      <button class="pin-key" data-k="2">2</button>
+      <button class="pin-key" data-k="3">3</button>
+      <button class="pin-key" data-k="4">4</button>
+      <button class="pin-key" data-k="5">5</button>
+      <button class="pin-key" data-k="6">6</button>
+      <button class="pin-key" data-k="7">7</button>
+      <button class="pin-key" data-k="8">8</button>
+      <button class="pin-key" data-k="9">9</button>
+      <button class="pin-key del" data-k="del">⌫</button>
+      <button class="pin-key" data-k="0">0</button>
+      <button class="pin-key" data-k="ok">OK</button>
+    </div>
+    <div class="pin-error" id="pinError"></div>
+    <div class="small muted" style="margin-top:16px;opacity:.5;">Default PIN: 1234</div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN LAYOUT ══════════ -->
+<div class="admin-wrap" id="adminWrap" style="display:none;">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="./image/logo.png" alt="logo" />
+      <div>
+        <div class="sidebar-logo-text">Brew &amp; Bloom</div>
+        <div class="sidebar-logo-sub">Admin Panel</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Overview</div>
+    <button class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">📊</span> Dashboard
+    </button>
+
+    <div class="sidebar-section">Orders</div>
+    <button class="nav-item" data-page="orders">
+      <span class="nav-icon">🛍️</span> All Orders
+    </button>
+    <button class="nav-item" data-page="reservations">
+      <span class="nav-icon">🪑</span> Reservations
+    </button>
+
+    <div class="sidebar-section">Catalogue</div>
+    <button class="nav-item" data-page="menu">
+      <span class="nav-icon">🍽️</span> Menu Manager
+    </button>
+    <button class="nav-item" data-page="coupons">
+      <span class="nav-icon">🎟️</span> Coupons
+    </button>
+
+    <div class="sidebar-section">Settings</div>
+    <button class="nav-item" data-page="settings">
+      <span class="nav-icon">⚙️</span> Settings
+    </button>
+
+    <div style="flex:1;"></div>
+    <div style="padding:16px 20px; border-top:1px solid rgba(212,165,116,.12); margin-top:8px;">
+      <a href="index.html" class="btn btn-ghost ripple"
+         style="width:100%;justify-content:center;padding:10px;font-size:.85rem;">
+        ← Back to Site
+      </a>
+      <button id="lockBtn"
+         style="width:100%;margin-top:8px;padding:10px;border-radius:999px;border:1px solid rgba(244,63,94,.3);
+                background:rgba(244,63,94,.08);color:rgba(244,63,94,.8);font:inherit;font-size:.85rem;
+                font-weight:600;cursor:pointer;transition:background .18s;">
+        🔒 Lock
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main" id="adminMain">
+    <!-- Pages rendered by JS -->
+  </main>
+</div>
+
+<script src="./data.js"></script>
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════
+   PIN AUTH
+══════════════════════════════════════════ */
+const ADMIN_PIN = '1234';
+let   pinEntry  = '';
+
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('d' + i).classList.toggle('filled', i < pinEntry.length);
+  }
+}
+
+document.querySelectorAll('.pin-key').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const k = btn.dataset.k;
+    if (k === 'del') { pinEntry = pinEntry.slice(0, -1); }
+    else if (k === 'ok') { checkPin(); }
+    else if (pinEntry.length < 4) { pinEntry += k; }
+    updateDots();
+    if (pinEntry.length === 4 && k !== 'ok') checkPin();
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('pinScreen').style.display !== 'none') return;
+  if (e.key >= '0' && e.key <= '9' && pinEntry.length < 4) { pinEntry += e.key; updateDots(); if (pinEntry.length === 4) checkPin(); }
+  if (e.key === 'Backspace') { pinEntry = pinEntry.slice(0,-1); updateDots(); }
+  if (e.key === 'Enter') checkPin();
+});
+
+function checkPin() {
+  if (pinEntry === ADMIN_PIN) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'grid';
+    renderPage('dashboard');
+  } else {
+    document.getElementById('pinError').textContent = '✕ Incorrect PIN. Try again.';
+    pinEntry = '';
+    updateDots();
+    setTimeout(() => document.getElementById('pinError').textContent = '', 2000);
+  }
+}
+
+document.getElementById('lockBtn').addEventListener('click', () => {
+  pinEntry = '';
+  updateDots();
+  document.getElementById('adminWrap').style.display = 'none';
+  document.getElementById('pinScreen').style.display  = 'flex';
+});
+
+/* ══════════════════════════════════════════
+   DATA HELPERS
+══════════════════════════════════════════ */
+function getOrders() {
+  // Collect from bb_lastOrder_v1 + any seeded demo orders
+  const last = safeGet('bb_lastOrder_v1');
+  const all  = safeGet('bb_all_orders_v1') || [];
+  // Merge last order into list (avoid dupes)
+  if (last && !all.find(o => o.orderId === last.orderId)) {
+    all.unshift(last);
+    localStorage.setItem('bb_all_orders_v1', JSON.stringify(all));
+  }
+  return all;
+}
+
+function getReservations() {
+  const last = safeGet('bb_lastReservation_v1');
+  const all  = safeGet('bb_all_reservations_v1') || [];
+  if (last && !all.find(r => r.reservationId === last.reservationId)) {
+    all.unshift(last);
+    localStorage.setItem('bb_all_reservations_v1', JSON.stringify(all));
+  }
+  return all;
+}
+
+function safeGet(key) {
+  try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; }
+}
+
+function getMenuOverrides() {
+  return safeGet('bb_menu_overrides_v1') || {};
+}
+function saveMenuOverrides(obj) {
+  localStorage.setItem('bb_menu_overrides_v1', JSON.stringify(obj));
+}
+
+function fmtINR(n) { return '₹ ' + Number(n||0).toLocaleString('en-IN'); }
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
+    + ' ' + d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+}
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+function renderPage(page) {
+  document.querySelectorAll('.nav-item').forEach(b =>
+    b.classList.toggle('active', b.dataset.page === page));
+  const main = document.getElementById('adminMain');
+  const map  = { dashboard, orders, reservations, menu: menuPage, settings };
+  if (map[page]) main.innerHTML = map[page]();
+  else main.innerHTML = '<div class="empty-state">Page not found.</div>';
+  bindPageEvents(page);
+}
+
+document.querySelectorAll('.nav-item').forEach(btn =>
+  btn.addEventListener('click', () => renderPage(btn.dataset.page)));
+
+/* ══════════════════════════════════════════
+   PAGES
+══════════════════════════════════════════ */
+
+/* ── Dashboard ── */
+function dashboard() {
+  const orderList = getOrders();
+  const resvList  = getReservations();
+  const revenue   = orderList.reduce((s, o) => {
+    // try to recompute from cart, fallback 0
+    return s + (o.grandTotal || 0);
+  }, 0);
+  const today = new Date().toDateString();
+  const todayOrders = orderList.filter(o => new Date(o.createdAt).toDateString() === today);
+
+  return `
+    <div class="admin-header">
+      <div>
+        <div class="small muted">Welcome back 👋</div>
+        <h1>Dashboard</h1>
+      </div>
+      <div class="small muted">${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card glass">
+        <div class="stat-icon">🛍️</div>
+        <div class="stat-val">${orderList.length}</div>
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-trend">↑ ${todayOrders.length} today</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon">💰</div>
+        <div class="stat-val">${fmtINR(revenue)}</div>
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-trend">From confirmed orders</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon">🪑</div>
+        <div class="stat-val">${resvList.length}</div>
+        <div class="stat-label">Reservations</div>
+        <div class="stat-trend">Table bookings</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon">🍽️</div>
+        <div class="stat-val">${(window.BREWBLOOM_DISHES||[]).length}</div>
+        <div class="stat-label">Menu Items</div>
+        <div class="stat-trend">Across all categories</div>
+      </div>
+    </div>
+
+    <!-- Recent orders -->
+    <div class="section-card">
+      <div class="section-head">
+        <span>🕐 Recent Orders</span>
+        <button class="btn btn-ghost ripple" style="padding:6px 14px;font-size:.82rem;"
+                onclick="renderPage('orders')">View all →</button>
+      </div>
+      ${orderList.length ? `
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr>
+            <th>Order ID</th><th>Tracking</th><th>Mode</th><th>Method</th><th>Date</th><th>Status</th>
+          </tr></thead>
+          <tbody>${orderList.slice(0,5).map(o => `
+            <tr>
+              <td><b style="color:var(--accent)">${o.orderId||'—'}</b></td>
+              <td>${o.trackingId||'—'}</td>
+              <td>${o.deliveryMode||'—'}</td>
+              <td>${o.payment?.method||'—'}</td>
+              <td>${fmtDate(o.createdAt)}</td>
+              <td><span class="status-badge status-confirmed">✓ ${o.status||'Confirmed'}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="empty-state">No orders yet. Place an order from the site to see it here.</div>'}
+    </div>
+
+    <!-- Recent reservations -->
+    <div class="section-card">
+      <div class="section-head">
+        <span>🪑 Recent Reservations</span>
+        <button class="btn btn-ghost ripple" style="padding:6px 14px;font-size:.82rem;"
+                onclick="renderPage('reservations')">View all →</button>
+      </div>
+      ${resvList.length ? `
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>ID</th><th>Name</th><th>Table</th><th>Guests</th><th>Slot</th><th>Date</th></tr></thead>
+          <tbody>${resvList.slice(0,5).map(r => `
+            <tr>
+              <td><b style="color:var(--accent)">${r.reservationId||'—'}</b></td>
+              <td>${r.name||'—'}</td>
+              <td>${r.table||'—'}</td>
+              <td>${r.guests||'—'}</td>
+              <td>${r.slot||'—'}</td>
+              <td>${fmtDate(r.createdAt)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="empty-state">No reservations yet.</div>'}
+    </div>`;
+}
+
+/* ── Orders page ── */
+function orders() {
+  const list = getOrders();
+  return `
+    <div class="admin-header">
+      <h1>🛍️ All Orders</h1>
+      <button class="btn btn-ghost ripple" style="padding:8px 16px;font-size:.85rem;"
+              id="clearOrders">🗑️ Clear All</button>
+    </div>
+    <div class="section-card">
+      ${list.length ? `
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr>
+            <th>Order ID</th><th>Invoice</th><th>Tracking</th>
+            <th>Mode</th><th>Payment</th><th>Tx ID</th><th>Date</th><th>Status</th>
+          </tr></thead>
+          <tbody>${list.map(o => `
+            <tr>
+              <td><b style="color:var(--accent)">${o.orderId||'—'}</b></td>
+              <td>${o.invoiceNumber||'—'}</td>
+              <td>${o.trackingId||'—'}</td>
+              <td><span class="status-badge status-pending">${o.deliveryMode||'—'}</span></td>
+              <td>${o.payment?.method||'—'}</td>
+              <td style="font-size:.78rem;opacity:.7;">${o.payment?.transactionId||'—'}</td>
+              <td style="white-space:nowrap;">${fmtDate(o.createdAt)}</td>
+              <td><span class="status-badge status-confirmed">✓ ${o.status||'Confirmed'}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="empty-state">No orders found. Place an order from the customer site.</div>'}
+    </div>`;
+}
+
+/* ── Reservations page ── */
+function reservations() {
+  const list = getReservations();
+  return `
+    <div class="admin-header">
+      <h1>🪑 Reservations</h1>
+      <button class="btn btn-ghost ripple" style="padding:8px 16px;font-size:.85rem;"
+              id="clearReservations">🗑️ Clear All</button>
+    </div>
+    <div class="section-card">
+      ${list.length ? `
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr>
+            <th>Res. ID</th><th>Name</th><th>Phone</th>
+            <th>Table</th><th>Seats</th><th>Guests</th><th>Slot</th><th>Notes</th><th>Date</th>
+          </tr></thead>
+          <tbody>${list.map(r => `
+            <tr>
+              <td><b style="color:var(--accent)">${r.reservationId||'—'}</b></td>
+              <td>${r.name||'—'}</td>
+              <td>${r.phone||'—'}</td>
+              <td>${r.table||'—'}</td>
+              <td>${r.capacity||'—'}</td>
+              <td>${r.guests||'—'}</td>
+              <td><span class="status-badge status-confirmed">${r.slot||'—'}</span></td>
+              <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${r.notes||'—'}</td>
+              <td style="white-space:nowrap;">${fmtDate(r.createdAt)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="empty-state">No reservations yet.</div>'}
+    </div>`;
+}
+
+/* ── Menu Manager page ── */
+function menuPage() {
+  const dishes    = window.BREWBLOOM_DISHES    || [];
+  const cats      = window.BREWBLOOM_CATEGORIES|| [];
+  const overrides = getMenuOverrides();
+
+  const catTabs = cats.map((c,i) =>
+    `<button class="tab-btn${i===0?' active':''}" data-cat="${c.id}">${c.emoji} ${c.name}</button>`
+  ).join('');
+
+  const rows = cats.map(cat => {
+    const catDishes = dishes.filter(d => d.categoryId === cat.id);
+    return `<div class="cat-group" data-group="${cat.id}" style="${cat===cats[0]?'':'display:none'}">
+      ${catDishes.map(d => {
+        const ov = overrides[d.id] || {};
+        const price = ov.price ?? d.price;
+        const avail = ov.available !== false;
+        return `
+        <div class="menu-item-row">
+          <img src="${d.image}" alt="${d.name}" />
+          <div>
+            <div style="font-weight:700;font-size:.92rem;">${d.name}</div>
+            <div class="small muted">${d.veg?'🥦 Veg':'🍗 Non-Veg'} • ⭐ ${d.rating} • ${d.timeMin} min</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+            <div class="small muted" style="font-size:.7rem;">Price</div>
+            <input class="menu-edit-input" data-price="${d.id}" value="${price}" type="number" min="1" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+            <div class="small muted" style="font-size:.7rem;">${avail?'Active':'Off'}</div>
+            <button class="toggle-avail${avail?' on':''}" data-toggle="${d.id}" title="Toggle availability"></button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="admin-header">
+      <h1>🍽️ Menu Manager</h1>
+      <button class="btn btn-primary ripple" id="saveMenuBtn" style="padding:10px 20px;">
+        💾 Save Changes
+      </button>
+    </div>
+    <div class="small muted" style="margin-bottom:18px;line-height:1.6;">
+      Edit prices and toggle item availability. Changes are saved locally and reflected on the customer site.
+    </div>
+    <div class="section-card">
+      <div class="tab-bar" id="catTabs">${catTabs}</div>
+      <div id="menuRows" style="margin-top:4px;">${rows}</div>
+    </div>`;
+}
+
+/* ── Coupon Manager page ── */
+function coupons() {
+  const DEFAULT = [
+    { code:'GOLD10',    type:'pct',  pct:0.10, max:100, active:true, description:'10% off subtotal (max ₹100)' },
+    { code:'BLOOM20',   type:'pct',  pct:0.20, max:180, active:true, description:'20% off subtotal (max ₹180)' },
+    { code:'WELCOME50', type:'flat', flat:50,            active:true, description:'₹50 flat discount' }
+  ];
+  let list;
+  try { list = JSON.parse(localStorage.getItem('bb_coupons_v1') || 'null'); } catch { list = null; }
+  if (!Array.isArray(list)) list = DEFAULT;
+
+  function rowHtml(c, i) {
+    return `
+    <tr data-coupon-row="${i}">
+      <td><b style="color:var(--accent);letter-spacing:.04em;">${c.code}</b></td>
+      <td>
+        ${c.type === 'pct'
+          ? `<span class="status-badge status-pending">% ${Math.round(c.pct*100)}% off</span>`
+          : `<span class="status-badge status-confirmed">₹ Flat ₹${c.flat}</span>`}
+      </td>
+      <td>${c.description || '—'}</td>
+      <td>
+        <button class="toggle-avail${c.active!==false?' on':''}"
+                data-ctoggle="${i}" title="Toggle active"></button>
+      </td>
+      <td>
+        <button class="btn btn-ghost ripple" data-cedit="${i}"
+                style="padding:6px 12px;font-size:.78rem;">✏️ Edit</button>
+        <button class="btn btn-ghost ripple" data-cdel="${i}"
+                style="padding:6px 12px;font-size:.78rem;color:rgba(244,63,94,.8);margin-left:6px;">🗑️</button>
+      </td>
+    </tr>`;
+  }
+
+  return `
+    <div class="admin-header">
+      <div>
+        <div class="small muted">Manage discount codes</div>
+        <h1>🎟️ Coupons</h1>
+      </div>
+      <button class="btn btn-primary ripple" id="addCouponBtn" style="padding:10px 20px;">
+        + New Coupon
+      </button>
+    </div>
+
+    <div class="small muted" style="margin-bottom:18px;line-height:1.65;">
+      Coupons created here are instantly available on the customer site cart.
+      Toggle them on/off without deleting.
+    </div>
+
+    <!-- Add / Edit form (hidden by default) -->
+    <div class="section-card" id="couponForm" style="display:none;margin-bottom:18px;">
+      <div class="section-head">
+        <span id="couponFormTitle">➕ New Coupon</span>
+        <button class="btn btn-ghost ripple" id="cancelCouponBtn" style="padding:6px 14px;font-size:.82rem;">Cancel</button>
+      </div>
+      <div style="padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+        <div class="field">
+          <label class="label">Coupon Code *</label>
+          <input class="input" id="cf_code" placeholder="e.g. SAVE30" style="text-transform:uppercase;" maxlength="20" />
+        </div>
+        <div class="field">
+          <label class="label">Type *</label>
+          <select class="input" id="cf_type">
+            <option value="pct">Percentage (%)</option>
+            <option value="flat">Flat Amount (₹)</option>
+          </select>
+        </div>
+        <div class="field" id="cf_pct_wrap">
+          <label class="label">Discount % *</label>
+          <input class="input" id="cf_pct" type="number" min="1" max="100" placeholder="e.g. 15" />
+        </div>
+        <div class="field" id="cf_max_wrap">
+          <label class="label">Max Discount ₹</label>
+          <input class="input" id="cf_max" type="number" min="0" placeholder="e.g. 150 (optional)" />
+        </div>
+        <div class="field" id="cf_flat_wrap" style="display:none;">
+          <label class="label">Flat Amount ₹ *</label>
+          <input class="input" id="cf_flat" type="number" min="1" placeholder="e.g. 50" />
+        </div>
+        <div class="field" style="grid-column:1/-1;">
+          <label class="label">Description</label>
+          <input class="input" id="cf_desc" placeholder="e.g. 15% off on orders above ₹300" />
+        </div>
+        <div style="grid-column:1/-1;display:flex;gap:10px;align-items:center;">
+          <button class="btn btn-primary ripple" id="saveCouponBtn" style="padding:10px 22px;">
+            💾 Save Coupon
+          </button>
+          <div id="couponSaveMsg" style="font-size:.85rem;min-height:18px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coupon list -->
+    <div class="section-card">
+      <div class="section-head"><span>Active Coupons</span>
+        <span class="small muted" id="couponCount">${list.length} coupon(s)</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table" id="couponTable">
+          <thead><tr>
+            <th>Code</th><th>Type</th><th>Description</th><th>Active</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="couponTbody">${list.map(rowHtml).join('')}</tbody>
+        </table>
+        ${list.length === 0 ? '<div class="empty-state">No coupons yet. Click "+ New Coupon" to add one.</div>' : ''}
+      </div>
+    </div>`;
+}
+
+/* ── Settings page ── */
+function settings() {
+  const currentPin = ADMIN_PIN;
+  return `
+    <div class="admin-header"><h1>⚙️ Settings</h1></div>
+
+    <div class="section-card">
+      <div class="section-head">🔑 Change Admin PIN</div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:14px;max-width:360px;">
+        <div class="field">
+          <label class="label">New PIN (4 digits)</label>
+          <input class="input" id="newPin" type="password" maxlength="4"
+                 inputmode="numeric" placeholder="Enter new PIN" />
+        </div>
+        <div class="field">
+          <label class="label">Confirm PIN</label>
+          <input class="input" id="confirmPin" type="password" maxlength="4"
+                 inputmode="numeric" placeholder="Confirm new PIN" />
+        </div>
+        <button class="btn btn-primary ripple" id="savePinBtn" style="justify-content:center;">
+          Update PIN
+        </button>
+        <div id="pinSaveMsg" style="min-height:18px;font-size:.85rem;"></div>
+      </div>
+    </div>
+
+    <div class="section-card" style="margin-top:0;">
+      <div class="section-head">🗄️ Data Management</div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div class="small muted" style="line-height:1.6;">
+          All data is stored in the browser's localStorage. Use these actions carefully.
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-ghost ripple" id="exportBtn" style="padding:10px 18px;">
+            📥 Export Orders JSON
+          </button>
+          <button class="btn btn-ghost ripple" id="clearAllBtn"
+                  style="padding:10px 18px;border-color:rgba(244,63,94,.3);color:rgba(244,63,94,.8);">
+            🗑️ Clear All Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-head">ℹ️ About</div>
+      <div style="padding:20px;" class="small muted">
+        <div>Brew &amp; Bloom Admin Panel — Demo Version</div>
+        <div style="margin-top:6px;">Data stored in localStorage. No backend required.</div>
+        <div style="margin-top:6px;">To connect a real backend, replace localStorage calls with API calls.</div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   PAGE EVENT BINDINGS
+══════════════════════════════════════════ */
+function bindPageEvents(page) {
+
+  if (page === 'orders') {
+    document.getElementById('clearOrders')?.addEventListener('click', () => {
+      if (confirm('Clear all orders? This cannot be undone.')) {
+        localStorage.removeItem('bb_all_orders_v1');
+        localStorage.removeItem('bb_lastOrder_v1');
+        renderPage('orders');
+      }
+    });
+  }
+
+  if (page === 'reservations') {
+    document.getElementById('clearReservations')?.addEventListener('click', () => {
+      if (confirm('Clear all reservations?')) {
+        localStorage.removeItem('bb_all_reservations_v1');
+        localStorage.removeItem('bb_lastReservation_v1');
+        renderPage('reservations');
+      }
+    });
+  }
+
+  if (page === 'menu') {
+    // Tab switching
+    document.getElementById('catTabs')?.addEventListener('click', e => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+      document.querySelectorAll('.cat-group').forEach(g => {
+        g.style.display = g.dataset.group === cat ? '' : 'none';
+      });
+    });
+
+    // Toggle availability
+    document.querySelectorAll('.toggle-avail').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('on');
+        const prev = btn.previousElementSibling;
+        if (prev) prev.textContent = btn.classList.contains('on') ? 'Active' : 'Off';
+      });
+    });
+
+    // Save changes
+    document.getElementById('saveMenuBtn')?.addEventListener('click', () => {
+      const overrides = getMenuOverrides();
+      document.querySelectorAll('.menu-edit-input').forEach(inp => {
+        const id = inp.dataset.price;
+        if (!overrides[id]) overrides[id] = {};
+        overrides[id].price = Number(inp.value) || 0;
+      });
+      document.querySelectorAll('.toggle-avail').forEach(btn => {
+        const id = btn.dataset.toggle;
+        if (!overrides[id]) overrides[id] = {};
+        overrides[id].available = btn.classList.contains('on');
+      });
+      saveMenuOverrides(overrides);
+      const sb = document.getElementById('saveMenuBtn');
+      sb.textContent = '✓ Saved!';
+      setTimeout(() => sb.textContent = '💾 Save Changes', 2000);
+    });
+  }
+
+  if (page === 'settings') {
+    document.getElementById('savePinBtn')?.addEventListener('click', () => {
+      const np  = document.getElementById('newPin').value;
+      const cp  = document.getElementById('confirmPin').value;
+      const msg = document.getElementById('pinSaveMsg');
+      if (!/^\d{4}$/.test(np)) { msg.style.color='rgba(244,63,94,.85)'; msg.textContent='PIN must be exactly 4 digits.'; return; }
+      if (np !== cp)            { msg.style.color='rgba(244,63,94,.85)'; msg.textContent='PINs do not match.'; return; }
+      // In a real app this would be stored securely on a server
+      localStorage.setItem('bb_admin_pin_v1', np);
+      msg.style.color = 'rgba(34,197,94,.85)';
+      msg.textContent = '✓ PIN updated (session only — page refresh resets to default 1234).';
+    });
+
+    document.getElementById('exportBtn')?.addEventListener('click', () => {
+      const data = {
+        orders:       getOrders(),
+        reservations: getReservations(),
+        exported:     new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url; a.download = 'brewbloom_export.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('clearAllBtn')?.addEventListener('click', () => {
+      if (confirm('This will delete ALL orders, reservations, cart, and menu overrides. Are you sure?')) {
+        ['bb_cart_v1','bb_favs_v1','bb_orderDraft_v1','bb_lastOrder_v1',
+         'bb_lastReservation_v1','bb_all_orders_v1','bb_all_reservations_v1','bb_menu_overrides_v1']
+          .forEach(k => localStorage.removeItem(k));
+        alert('All data cleared.');
+        renderPage('settings');
+      }
+    });
+  }
+}
+
+/* ══════════════════════════════════════════
+   SEED DEMO DATA (if empty)
+══════════════════════════════════════════ */
+function seedDemoData() {
+  const orders = safeGet('bb_all_orders_v1') || [];
+  if (orders.length > 0) return; // already has data
+
+  const demoOrders = [
+    { orderId:'ORD-001234', invoiceNumber:'INV-001', trackingId:'TRK-991234',
+      status:'Confirmed', deliveryMode:'homeDelivery', createdAt: new Date(Date.now()-3600000).toISOString(),
+      payment:{ method:'upi', transactionId:'TX-881234', paidAt:new Date().toISOString() } },
+    { orderId:'ORD-002345', invoiceNumber:'INV-002', trackingId:'TRK-992345',
+      status:'Confirmed', deliveryMode:'dineIn', createdAt: new Date(Date.now()-7200000).toISOString(),
+      payment:{ method:'creditCard', transactionId:'TX-882345', paidAt:new Date().toISOString() } },
+    { orderId:'ORD-003456', invoiceNumber:'INV-003', trackingId:'TRK-993456',
+      status:'Confirmed', deliveryMode:'takeAway', createdAt: new Date(Date.now()-86400000).toISOString(),
+      payment:{ method:'googlePay', transactionId:'TX-883456', paidAt:new Date().toISOString() } },
+  ];
+  const demoReservations = [
+    { reservationId:'RSV-001', name:'Priya Sharma', phone:'9876543210',
+      table:'T3', capacity:4, guests:3, slot:'07:30 PM', notes:'Anniversary dinner',
+      createdAt: new Date(Date.now()-1800000).toISOString() },
+    { reservationId:'RSV-002', name:'Arjun Mehta', phone:'9123456789',
+      table:'T7', capacity:2, guests:2, slot:'12:00 PM', notes:'',
+      createdAt: new Date(Date.now()-3600000).toISOString() },
+  ];
+
+  localStorage.setItem('bb_all_orders_v1',       JSON.stringify(demoOrders));
+  localStorage.setItem('bb_all_reservations_v1', JSON.stringify(demoReservations));
+}
+
+seedDemoData();
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Brew & Bloom table reservations — premium booking UI (demo)." />
+  <title>Reserve Table | Brew &amp; Bloom</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner glass">
+
+        <!-- Brand -->
+        <div class="brand" role="banner">
+          <img src="./image/logo.png" alt="Brew &amp; Bloom logo" class="logo" />
+          <div>
+            <h1 class="h1" style="font-size:1.05rem;">Brew &amp; Bloom</h1>
+            <span>Reserve</span>
+          </div>
+        </div><!-- /.brand -->
+
+        <!-- Nav links -->
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="reserve.html"
+             style="border-color:rgba(212,165,116,.45); background:rgba(250,245,237,.06);">Reserve</a>
+        </nav>
+
+        <!-- Actions -->
+        <div class="nav-actions">
+          <a class="btn btn-ghost ripple" href="menu.html" style="padding:10px 14px;">← Menu</a>
+        </div>
+
+      </div><!-- /.navbar-inner -->
+    </div><!-- /.container -->
+  </header>
+
+  <!-- ═══════════════════════════ MAIN ════════════════════════════ -->
+  <main class="section" style="padding-top:26px;">
+    <div class="container">
+
+      <!-- Page heading -->
+      <div class="small muted reveal">Table booking</div>
+      <h2 class="h2 reveal" style="margin-top:8px;">Reserve a premium seat</h2>
+      <p class="small muted reveal" style="margin-top:8px; line-height:1.6; max-width:560px;">
+        Pick an available table, choose a time slot, fill your details, and confirm — all in one flow.
+      </p>
+
+      <div class="hr" style="margin-top:18px;"></div>
+
+      <!-- Two-column layout -->
+      <div class="hero-grid" style="grid-template-columns:1fr 420px; gap:18px; align-items:start; margin-top:18px;">
+
+        <!-- ── LEFT: Floor plan + slots ── -->
+        <section class="glass card" style="padding:22px; border-radius:26px;">
+
+          <!-- Legend -->
+          <div class="reveal" style="display:flex; gap:18px; flex-wrap:wrap;
+               align-items:center; justify-content:space-between; margin-bottom:16px;">
+            <div class="small muted" style="display:flex; gap:18px; align-items:center;">
+              <span style="display:inline-flex; align-items:center; gap:6px;">
+                <span style="width:10px;height:10px;border-radius:50%;
+                             background:rgba(34,197,94,.85); display:inline-block;"></span>
+                Available
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:6px;
+                           color:rgba(244,63,94,.9);">
+                <span style="width:10px;height:10px;border-radius:50%;
+                             background:rgba(244,63,94,.85); display:inline-block;"></span>
+                Occupied
+              </span>
+            </div>
+            <div class="small muted">Glassmorphism ambience • Espresso vibes</div>
+          </div><!-- /.legend -->
+
+          <!-- Floor grid (filled by JS) -->
+          <div class="floor" id="floorGrid" aria-label="Tables grid"></div>
+
+          <div class="hr"></div>
+
+          <!-- Time slots -->
+          <div style="display:flex; gap:12px; flex-wrap:wrap;
+               align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div class="small" style="font-weight:700;">Time slots</div>
+            <div class="small muted" id="slotHint">Select a table first</div>
+          </div><!-- /.slots header -->
+
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;"
+               id="slotGrid"></div>
+
+        </section><!-- /.left section -->
+
+        <!-- ── RIGHT: Booking form ── -->
+        <aside class="glass card"
+               style="padding:22px; border-radius:26px; position:sticky; top:92px;">
+
+          <div class="small muted reveal">Reservation details</div>
+          <h2 class="h2 reveal" style="margin-top:8px; font-size:1.2rem;">Confirm your booking</h2>
+          <div class="hr"></div>
+
+          <div class="form">
+
+            <div class="field">
+              <label class="label" for="rName">Name</label>
+              <input class="input" id="rName" placeholder="Your full name" autocomplete="name" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="rPhone">Phone</label>
+              <input class="input" id="rPhone" placeholder="+91 ..." type="tel" autocomplete="tel" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="rGuests">Guests</label>
+              <select class="input" id="rGuests">
+                <option value="1">1 guest</option>
+                <option value="2" selected>2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5">5 guests</option>
+                <option value="6">6 guests</option>
+                <option value="7">7 guests</option>
+                <option value="8">8 guests</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="label" for="rSlot">Time slot</label>
+              <input class="input" id="rSlot" placeholder="Select a slot on the left"
+                     readonly aria-readonly="true" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="rTable">Selected table</label>
+              <input class="input" id="rTable" placeholder="Select a table on the left"
+                     readonly aria-readonly="true" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="rNotes">Notes (optional)</label>
+              <textarea class="input" id="rNotes"
+                        placeholder="Occasion, seating preference, allergies..."></textarea>
+            </div>
+
+            <button class="btn btn-primary ripple" id="reserveBtn"
+                    type="button" style="justify-content:center; margin-top:4px;">
+              Confirm Reservation
+            </button>
+
+            <!-- Status message -->
+            <div class="small muted" id="reserveStatus"
+                 style="margin-top:10px; line-height:1.6; min-height:20px;">
+              Demo UI — reservation saved locally.
+            </div>
+
+          </div><!-- /.form -->
+
+          <div class="hr"></div>
+
+          <a class="btn btn-ghost ripple" href="menu.html"
+             style="width:100%; justify-content:center;">
+            Order food instead
+          </a>
+
+        </aside><!-- /.right aside -->
+
+      </div><!-- /.hero-grid -->
+    </div><!-- /.container -->
+  </main>
+
+  <!-- ═══════════════════════════ FOOTER ══════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted" style="text-align:center;">
+        © <span id="year"></span> Brew &amp; Bloom — Demo UI
+      </div>
+    </div><!-- /.container -->
+  </footer>
+
+  <!-- ═══════════════════════════ SCRIPTS ═════════════════════════ -->
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    'use strict';
+
+    // ── Year ──────────────────────────────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Mock floor plan data ──────────────────────────────────────
+    const tables = Array.from({ length: 12 }, (_, i) => ({
+      id       : 'T' + (i + 1),
+      capacity : (i % 4 === 0) ? 4 : (i % 3 === 0 ? 3 : 2),
+      occupied : (i % 5 === 0)          // T1, T6, T11 pre-occupied
+    }));
+
+    // ── DOM refs ──────────────────────────────────────────────────
+    const floorGrid  = document.getElementById('floorGrid');
+    const slotGrid   = document.getElementById('slotGrid');
+    const slotHint   = document.getElementById('slotHint');
+    const rTableEl   = document.getElementById('rTable');
+    const rSlotEl    = document.getElementById('rSlot');
+    const statusEl   = document.getElementById('reserveStatus');
+
+    // ── State ─────────────────────────────────────────────────────
+    let selectedTable = null;
+    let selectedSlot  = null;
+
+    // ── Time slots ────────────────────────────────────────────────
+    const slots = [
+      '11:30 AM', '12:00 PM', '12:30 PM',
+      '01:00 PM', '01:30 PM', '02:00 PM',
+      '07:00 PM', '07:30 PM', '08:00 PM'
+    ];
+
+    // ── Render floor grid ─────────────────────────────────────────
+    function renderTables() {
+      floorGrid.innerHTML = '';
+
+      tables.forEach(t => {
+        const btn = document.createElement('button');
+        btn.type      = 'button';
+        btn.className = 'table-pill glass card';
+        btn.setAttribute('data-state', t.occupied ? 'occupied' : 'available');
+        btn.setAttribute('aria-label',
+          `Table ${t.id}, seats ${t.capacity}, ${t.occupied ? 'occupied' : 'available'}`);
+
+        btn.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px; width:100%;">
+            <span class="dot"></span>
+            <span style="font-weight:900;">${t.id}</span>
+          </div>
+          <div class="small muted">Seats ${t.capacity}</div>
+        `;
+
+        btn.addEventListener('click', () => {
+          if (t.occupied) {
+            slotHint.textContent = `${t.id} is occupied — pick another table.`;
+            selectedTable = null;
+            rTableEl.value = '';
+            rSlotEl.value  = '';
+            selectedSlot   = null;
+            highlightSlot(null);
+            return;
+          }
+          // deselect previous
+          floorGrid.querySelectorAll('.table-pill').forEach(b =>
+            b.style.borderColor = '');
+
+          selectedTable        = t;
+          rTableEl.value       = `${t.id} (Seats ${t.capacity})`;
+          btn.style.borderColor = 'rgba(212,165,116,.8)';
+          slotHint.textContent  = `${t.id} selected — choose a time slot.`;
+        });
+
+        floorGrid.appendChild(btn);
+      });
+    }
+
+    // ── Render time slots ─────────────────────────────────────────
+    function renderSlots() {
+      slotGrid.innerHTML = '';
+
+      slots.forEach(s => {
+        const btn = document.createElement('button');
+        btn.type      = 'button';
+        btn.className = 'btn btn-ghost ripple';
+        btn.dataset.slot = s;
+        btn.style.cssText = 'padding:12px 10px; border-radius:18px; justify-content:center;';
+        btn.textContent   = s;
+
+        btn.addEventListener('click', () => {
+          if (!selectedTable) {
+            slotHint.textContent = 'Select an available table first.';
+            return;
+          }
+          selectedSlot   = s;
+          rSlotEl.value  = s;
+          slotHint.textContent = 'Slot selected — ready to confirm.';
+          highlightSlot(s);
+        });
+
+        slotGrid.appendChild(btn);
+      });
+    }
+
+    // ── Highlight active slot button ──────────────────────────────
+    function highlightSlot(active) {
+      slotGrid.querySelectorAll('[data-slot]').forEach(btn => {
+        btn.style.borderColor    = '';
+        btn.style.background     = '';
+        btn.style.color          = '';
+        btn.style.fontWeight     = '';
+        if (active && btn.dataset.slot === active) {
+          btn.style.borderColor  = 'rgba(212,165,116,.8)';
+          btn.style.background   = 'rgba(212,165,116,.18)';
+          btn.style.color        = 'var(--white)';
+          btn.style.fontWeight   = '700';
+        }
+      });
+    }
+
+    // ── Confirm reservation ───────────────────────────────────────
+    document.getElementById('reserveBtn').addEventListener('click', () => {
+      const name   = document.getElementById('rName').value.trim();
+      const phone  = document.getElementById('rPhone').value.trim();
+      const guests = Number(document.getElementById('rGuests').value || '2');
+      const slot   = rSlotEl.value.trim();
+
+      // Validation
+      if (!name || !phone) {
+        setStatus('⚠️ Enter your name and phone to continue.', 'warn');
+        return;
+      }
+      if (!selectedTable) {
+        setStatus('⚠️ Select an available table from the floor plan.', 'warn');
+        return;
+      }
+      if (!slot) {
+        setStatus('⚠️ Select a time slot.', 'warn');
+        return;
+      }
+      if (guests > selectedTable.capacity) {
+        setStatus(
+          `⚠️ Table ${selectedTable.id} seats only ${selectedTable.capacity}. ` +
+          `Reduce guests or pick a larger table.`, 'warn');
+        return;
+      }
+
+      // Build reservation object
+      const reservation = {
+        reservationId : 'RSV-' + Date.now().toString().slice(-6),
+        table         : selectedTable.id,
+        capacity      : selectedTable.capacity,
+        guests,
+        slot,
+        name,
+        phone,
+        notes         : document.getElementById('rNotes').value.trim(),
+        createdAt     : new Date().toISOString()
+      };
+
+      // Persist
+      localStorage.setItem('bb_lastReservation_v1', JSON.stringify(reservation));
+
+      // Success UI
+      setStatus(
+        `<b style="color:var(--success)">✓ Reserved!</b>&nbsp; ID: <b>${reservation.reservationId}</b><br/>
+         Table <b>${reservation.table}</b> &bull; <b>${reservation.guests}</b> guest(s) &bull; <b>${reservation.slot}</b>`,
+        'ok'
+      );
+
+      // Mark table visually occupied in this session
+      selectedTable.occupied = true;
+      renderTables();
+      selectedTable = null;
+      selectedSlot  = null;
+      highlightSlot(null);
+    });
+
+    // ── Status helper ─────────────────────────────────────────────
+    function setStatus(html, type) {
+      statusEl.innerHTML = html;
+      statusEl.style.color = type === 'warn'
+        ? 'rgba(244,63,94,.9)'
+        : type === 'ok'
+          ? 'var(--success)'
+          : '';
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    renderTables();
+    renderSlots();
+  </script>
+
+</body>
+</html>

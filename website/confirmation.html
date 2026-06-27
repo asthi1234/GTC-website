@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Order confirmation — tracking, download invoice, WhatsApp/email summary (demo)." />
+  <title>Order Confirmed | Brew & Bloom</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner glass">
+        <div class="brand" role="banner">
+          <img src="./image/logo.png" alt="Brew &amp; Bloom logo" class="logo" />
+          <div>
+            <h1 class="h1" style="font-size:1.05rem;">Brew & Bloom</h1>
+            <span>Confirmation</span>
+          </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="reserve.html">Reserve</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-ghost ripple" href="menu.html" style="padding:10px 14px">Back to Menu</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Confetti overlay (simple CSS confetti) -->
+  <div class="confetti" id="confetti"></div>
+
+  <main class="section" style="padding-top:26px;">
+    <div class="container">
+      <div class="hero-grid" style="grid-template-columns: 1.15fr .85fr; gap:18px; align-items:start;">
+        <section class="glass card" style="padding:18px; border-radius:26px; position:relative; overflow:hidden;">
+          <div class="small muted reveal">Success</div>
+          <h2 class="h2 reveal" style="margin-top:8px">Order confirmed</h2>
+          <p class="small muted reveal" style="margin-top:10px; line-height:1.6">
+            Your premium meal is being prepared. Track the status with your tracking ID.
+          </p>
+
+          <div class="hr"></div>
+
+          <div class="reveal" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div class="glass card" style="padding:14px; border-radius:18px;">
+              <div class="small muted">Order ID</div>
+              <div style="font-weight:900; margin-top:8px" data-c-orderid>—</div>
+            </div>
+            <div class="glass card" style="padding:14px; border-radius:18px;">
+              <div class="small muted">Tracking ID</div>
+              <div style="font-weight:900; margin-top:8px" data-c-tracking>—</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="reveal" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <a class="btn btn-primary ripple" id="downloadInvoice" href="#" style="justify-content:center">Download invoice (demo)</a>
+            <button class="btn btn-ghost ripple" id="whatsappSummary" type="button">WhatsApp summary</button>
+            <button class="btn btn-ghost ripple" id="emailReceipt" type="button">Email receipt</button>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="reveal" style="display:grid; gap:10px;">
+            <div class="small muted">Live tracking (demo)</div>
+            <div class="glass card" style="padding:14px; border-radius:18px">
+              <div style="font-weight:900">Status:</div>
+              <div class="small muted" style="margin-top:6px; line-height:1.6">
+                <span id="trackStage">Confirmed • Preparing</span>
+              </div>
+              <div class="hr"></div>
+              <div class="small muted">Updates:</div>
+              <div class="small muted" id="trackUpdates" style="margin-top:8px; line-height:1.7">• Kitchen started processing</div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="glass card" style="padding:18px; border-radius:26px; position:sticky; top:92px;">
+          <div class="small muted reveal">Your next steps</div>
+          <div class="h2 reveal" style="margin-top:8px; font-size:1.2rem">Enjoy the experience</div>
+          <div class="hr"></div>
+          <div class="small muted" style="line-height:1.7">
+            1) Keep this page open for demo tracking<br/>
+            2) Download invoice anytime<br/>
+            3) Reserve a table for your next visit
+          </div>
+          <a class="btn btn-ghost ripple" href="reserve.html" style="width:100%; justify-content:center; margin-top:14px">Reserve Table</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted" style="text-align:center">© <span id="year"></span> Brew & Bloom — Demo UI</div>
+    </div>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const order = (function(){ try{ return JSON.parse(localStorage.getItem('bb_lastOrder_v1')||'null'); }catch{ return null; } })();
+    const cart = (function(){ try{ return JSON.parse(localStorage.getItem('bb_cart_v1')||'[]'); }catch{ return []; } })();
+
+    const set = (sel,val)=>{ const el=document.querySelector(sel); if(el) el.textContent = val || '—'; };
+    set('[data-c-orderid]', order?.orderId);
+    set('[data-c-tracking]', order?.trackingId);
+
+    // Confetti
+    const confetti = document.getElementById('confetti');
+    function launchConfetti(){
+      if (!confetti) return;
+      confetti.innerHTML = '';
+      confetti.classList.add('show');
+      const count = 120;
+      for (let i=0;i<count;i++){
+        const d = document.createElement('i');
+        const x = Math.random()*100;
+        d.style.left = x + '%';
+        d.style.animationDelay = (Math.random()*0.25) + 's';
+        d.style.transform = `rotate(${Math.floor(Math.random()*180)}deg)`;
+        confetti.appendChild(d);
+      }
+      setTimeout(()=>{ confetti.classList.remove('show'); confetti.innerHTML=''; }, 2000);
+    }
+
+    // Tracking demo
+    function simulateTracking(){
+      const el = document.getElementById('trackStage');
+      const updates = document.getElementById('trackUpdates');
+      const stages = [
+        'Confirmed • Preparing',
+        'Cooking started',
+        'Packed & ready',
+        'Out for delivery'
+      ];
+      let idx = 0;
+      updates.innerHTML = '• Kitchen started processing';
+      const t = setInterval(()=>{
+        idx++;
+        if (idx >= stages.length) { clearInterval(t); return; }
+        el.textContent = stages[idx];
+        const li = document.createElement('div');
+        li.className = '';
+        li.textContent = '• ' + (stages[idx]).replace(' • ',' ');
+        updates.appendChild(li);
+      }, 2500);
+    }
+
+    // Invoice download demo
+    function fmt(n){ return '₹ ' + Number(n||0).toLocaleString('en-IN'); }
+
+    document.getElementById('downloadInvoice')?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const calcTotals = window.BB && window.BB.calcTotals ? window.BB.calcTotals : null;
+      const totals = calcTotals ? calcTotals(cart, '') : { grandTotal:0, subtotal:0, gst:0, delivery:0, platformFee:0, packaging:0, discount:0 };
+      const lines = [];
+      lines.push('Brew & Bloom — Invoice (Demo)');
+      lines.push('Order ID: ' + (order?.orderId||'-'));
+      lines.push('Invoice: ' + (order?.invoiceNumber||'-'));
+      lines.push('Tracking ID: ' + (order?.trackingId||'-'));
+      lines.push('Date: ' + (order?.createdAt||'-'));
+      lines.push('');
+      lines.push('Items:');
+      (cart||[]).forEach(it=>{
+        const dish = (window.BREWBLOOM_DISHES||[]).find(d=>d.id===it.dishId);
+        lines.push('- ' + (dish?.name||it.dishId) + ' x ' + (it.qty||1));
+      });
+      lines.push('');
+      lines.push('Grand Total: ' + fmt(totals.grandTotal));
+
+      const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `BrewBloom_Invoice_${order?.invoiceNumber || 'demo'}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // WhatsApp + Email stubs
+    document.getElementById('whatsappSummary')?.addEventListener('click', ()=>{
+      const msg = encodeURIComponent(`Brew & Bloom order: ${order?.orderId||''}. Tracking: ${order?.trackingId||''}. Thank you!`);
+      // best effort: open WhatsApp share link
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    });
+    document.getElementById('emailReceipt')?.addEventListener('click', ()=>{
+      alert('Email receipt (demo): In a real app, we would send an email to your address.');
+    });
+
+    launchConfetti();
+    simulateTracking();
+  </script>
+</body>
+</html>
+

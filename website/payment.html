@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Brew & Bloom payment selection (demo)." />
+  <title>Payment | Brew & Bloom</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner glass">
+        <div class="brand" role="banner">
+          <img src="./image/logo.png" alt="Brew &amp; Bloom logo" class="logo" />
+          <div>
+            <h1 class="h1" style="font-size:1.05rem;">Brew &amp; Bloom</h1>
+            <span>Payment</span>
+          </div>
+        </div>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="menu.html">Menu</a>
+          <a href="checkout.html">Checkout</a>
+          <a href="reserve.html">Reserve</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="section" style="padding-top:26px;">
+    <div class="container">
+      <div class="hero-grid" style="grid-template-columns: 1fr 420px; align-items:start; gap:18px;">
+        <section class="glass card" style="padding:18px; border-radius:26px;">
+          <div class="small muted reveal">Choose a method</div>
+          <h2 class="h2 reveal" style="margin-top:8px">Payment for your order</h2>
+          <p class="small muted reveal" style="margin-top:8px; line-height:1.6">This is a demo UI — no real charges.</p>
+
+          <div class="hr"></div>
+
+          <form id="paymentForm" class="form" autocomplete="off">
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px;">
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="upi" style="accent-color: var(--accent)" checked /> UPI
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="googlePay" style="accent-color: var(--accent)" /> Google Pay
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="phonePe" style="accent-color: var(--accent)" /> PhonePe
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="paytm" style="accent-color: var(--accent)" /> Paytm
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="creditCard" style="accent-color: var(--accent)" /> Credit Card
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="debitCard" style="accent-color: var(--accent)" /> Debit Card
+              </label>
+              <label class="btn btn-ghost ripple" style="justify-content:flex-start; gap:10px; padding:14px 14px; border-radius:18px">
+                <input type="radio" name="paymentMethod" value="cod" style="accent-color: var(--accent)" /> Cash on Delivery
+              </label>
+            </div>
+
+            <div class="hr"></div>
+
+            <button class="btn btn-primary ripple" type="submit" style="justify-content:center">Pay & Place Order</button>
+            <div class="small muted" style="margin-top:10px; line-height:1.6">On “Pay”, we’ll generate an order ID and go to confirmation.</div>
+          </form>
+        </section>
+
+        <aside class="glass card" style="padding:18px; border-radius:26px; position:sticky; top:92px;">
+          <div class="small muted reveal">Summary</div>
+          <div class="h2 reveal" style="margin-top:8px; font-size:1.2rem">Totals</div>
+          <div class="hr"></div>
+
+          <div class="line"><div class="small muted">Subtotal</div><div class="small muted" data-t-subtotal>₹ 0</div></div>
+          <div class="line"><div class="small muted">GST</div><div class="small muted" data-t-gst>₹ 0</div></div>
+          <div class="line"><div class="small muted">Delivery</div><div class="small muted" data-t-delivery>₹ 0</div></div>
+          <div class="line"><div class="small muted">Platform Fee</div><div class="small muted" data-t-platform>₹ 0</div></div>
+          <div class="line"><div class="small muted">Packaging</div><div class="small muted" data-t-packaging>₹ 0</div></div>
+          <div class="line"><div class="small muted">Discount</div><div class="small muted" data-t-discount>₹ 0</div></div>
+          <div class="hr"></div>
+          <div class="line"><div><b>Grand Total</b></div><div class="total" data-t-grand>₹ 0</div></div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted" style="text-align:center">© <span id="year"></span> Brew & Bloom — Demo UI</div>
+    </div>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const draftKey = 'bb_orderDraft_v1';
+    function loadDraft(){ try{ return JSON.parse(localStorage.getItem(draftKey)||'{}'); }catch{ return {}; } }
+
+    function genId(prefix){
+      const t = Date.now().toString().slice(-6);
+      const r = Math.floor(Math.random()*900+100).toString();
+      return prefix + '-' + t + r;
+    }
+
+    // Try to compute totals using app.js helpers if available
+    function renderTotals(){
+      const cart = (window.BB && window.BB.loadCart) ? window.BB.loadCart() : [];
+      const couponInput = document.querySelector('[data-coupon]');
+      const couponCode = couponInput ? couponInput.value : '';
+      const calcTotals = window.BB && window.BB.calcTotals;
+      if (!calcTotals) return;
+      const totals = calcTotals(cart, couponCode);
+      const set = (sel, val) => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        el.textContent = '₹ ' + Number(val||0).toLocaleString('en-IN');
+      };
+      set('[data-t-subtotal]', totals.subtotal);
+      set('[data-t-gst]', totals.gst);
+      set('[data-t-delivery]', totals.delivery);
+      set('[data-t-platform]', totals.platformFee);
+      set('[data-t-packaging]', totals.packaging);
+      set('[data-t-discount]', totals.discount);
+      set('[data-t-grand]', totals.grandTotal);
+    }
+
+    renderTotals();
+
+    document.getElementById('paymentForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const method = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'upi';
+      const draft = loadDraft();
+
+      const payment = {
+        method,
+        paidAt: new Date().toISOString(),
+        transactionId: genId('TX')
+      };
+
+      const order = {
+        orderId: genId('ORD'),
+        invoiceNumber: 'INV-' + Date.now(),
+        status: 'Confirmed',
+        trackingId: genId('TRK'),
+        createdAt: new Date().toISOString(),
+        payment,
+        deliveryMode: draft.deliveryMode || 'homeDelivery'
+      };
+
+      localStorage.setItem('bb_lastOrder_v1', JSON.stringify(order));
+
+      window.location.href = 'confirmation.html';
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Brew & Bloom Café — premium ordering, delivery, and table reservations." />
+  <title>Brew & Bloom Café | Premium Ordering</title>
+
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    .icon-count{
+      position:absolute; top:-8px; right:-8px;
+      min-width:18px; height:18px; padding:0 6px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius: 999px;
+      background: rgba(212,165,116,.95);
+      color:#25160e; font-weight:800; font-size:.78rem;
+      border:1px solid rgba(250,245,237,.22);
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    }
+    .nav-actions{display:flex; align-items:center; gap:10px; position:relative;}
+    .profile{position:relative;}
+    .dropdown{
+      position:absolute; right:0; top:48px;
+      width: min(240px, 70vw);
+      display:none;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(212, 166, 116, 0.58);
+      background: rgba(17,10,7,.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow2);
+      z-index: 60;
+    }
+    .dropdown.open{display:block}
+    .dropdown a, .dropdown button{
+      width:100%;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 12px;
+      border:0;
+      background: transparent;
+      color: rgba(250,245,237,.92);
+      cursor:pointer;
+      font-weight:600;
+    }
+    .dropdown a:hover, .dropdown button:hover{background: rgba(250,245,237,.06);}
+
+    .hero-copy{position:relative; z-index:2;}
+    .hero h1{margin: 6px 0 10px}
+    .hero p{margin: 0 0 18px; opacity:.82; line-height:1.55}
+    .hero-ctas{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .hero-meta{display:flex; gap:12px; flex-wrap:wrap; margin-top: 18px;}
+    .rating-pill{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px; border-radius: 999px;
+      border:1px solid rgba(212,165,116,.25);
+      background: rgba(250,245,237,.06);
+      box-shadow: 0 14px 36px rgba(0,0,0,.25);
+    }
+    .stars{color: var(--accent); font-weight:900}
+    .scroll-indicator{display:flex; align-items:center; gap:10px; margin-top: 28px; opacity:.9;}
+    .mouse{
+      width: 26px; height: 42px; border-radius: 999px;
+      border:1.5px solid rgba(212,165,116,.40);
+      position:relative;
+      background: rgba(250,245,237,.02);
+    }
+    .mouse::after{
+      content:""; position:absolute; left:50%; top:10px;
+      width:6px; height:10px; border-radius: 999px;
+      background: rgba(212,165,116,.75);
+      transform: translateX(-50%);
+      animation: scroll 1.8s ease-in-out infinite;
+    }
+    @keyframes scroll{
+      0%,100%{transform: translateX(-50%) translateY(0); opacity:1}
+      80%{transform: translateX(-50%) translateY(12px); opacity:0}
+    }
+
+    .popular-section{padding: 60px 0 20px;}
+    .popular-grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:22px;}
+    @media (max-width:860px){.popular-grid{grid-template-columns: repeat(2, 1fr);}}
+    @media (max-width:520px){.popular-grid{grid-template-columns: 1fr;}}
+
+    .feature-grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:22px;}
+    @media (max-width:760px){.feature-grid{grid-template-columns: 1fr;}}
+
+    .feature-card{
+      padding:20px; border-radius: 22px;
+      border: 1px solid rgba(212,165,116,.22);
+      background: rgba(250,245,237,.05);
+    }
+    .feature-icon{font-size:2rem; margin-bottom:12px;}
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner glass">
+        <div class="brand" role="banner">
+    <img src="image/logo.png" alt="Brew & Bloom Café Logo" class="logo">
+
+    <div class="brand-text">
+        <h1 class="h1">Brew &amp; Bloom</h1>
+        <span>Premium Café</span>
+    </div>
+</div>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="index.html" style="border-color:rgba(212,165,116,.45); background:rgba(250,245,237,.06);">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="reserve.html">Reserve</a>
+        </nav>
+
+        <div class="search glass" title="Search dishes">
+          <span aria-hidden="true">🔎</span>
+          <input placeholder="Search pizza, coffee..." autocomplete="off" aria-label="Search dishes" />
+        </div>
+
+        <div class="nav-actions">
+          <button class="icon-btn ripple" id="cartBtn" aria-label="Open cart" style="position:relative;" data-cart-open>
+            🛒
+            <span class="icon-count" data-cart-count>0</span>
+          </button>
+
+          <div class="profile">
+            <button class="icon-btn ripple" id="profileBtn" aria-label="User menu">👤</button>
+            <div class="dropdown glass" id="profileDropdown">
+              <a href="menu.html"><span>Order food</span><span>→</span></a>
+              <a href="checkout.html"><span>Checkout</span><span>→</span></a>
+              <a href="reserve.html"><span>Reservations</span><span>→</span></a>
+            </div>
+          </div>
+
+          <button class="hamburger icon-btn ripple" id="hamburgerBtn" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cart Drawer -->
+  <div class="drawer-overlay"></div>
+  <aside class="drawer glass" aria-label="Shopping cart">
+    <div class="drawer-header">
+      <div style="font-weight:900">Your Cart</div>
+      <button class="icon-btn ripple" id="cartCloseBtn" aria-label="Close cart">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="small muted">Add items from the menu.</div>
+      <div class="hr"></div>
+      <div data-cart-items></div>
+      <div class="hr"></div>
+      <div class="field" style="margin-top:12px">
+        <div class="label">Coupon code</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input class="input" data-coupon placeholder="e.g., GOLD10" style="flex:1" />
+          <button class="btn btn-ghost ripple" data-apply-coupon style="padding:12px 14px">Apply</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="line"><div class="small muted">Subtotal</div><div class="small muted" data-t-subtotal>₹ 0</div></div>
+      <div class="line"><div class="small muted">GST</div><div class="small muted" data-t-gst>₹ 0</div></div>
+      <div class="line"><div class="small muted">Delivery</div><div class="small muted" data-t-delivery>₹ 0</div></div>
+      <div class="line"><div class="small muted">Platform Fee</div><div class="small muted" data-t-platform>₹ 0</div></div>
+      <div class="line"><div class="small muted">Packaging</div><div class="small muted" data-t-packaging>₹ 0</div></div>
+      <div class="line"><div class="small muted">Discount</div><div class="small muted" data-t-discount>₹ 0</div></div>
+      <div class="hr"></div>
+      <div class="line">
+        <div>Total</div>
+        <div class="total" data-t-grand>₹ 0</div>
+      </div>
+      <a class="btn btn-primary ripple" href="checkout.html" style="width:100%; justify-content:center; margin-top:14px;">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Quick view modal -->
+  <div class="modal-overlay"></div>
+  <div class="modal glass"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="steam">
+        <i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="small muted reveal">Premium café experience</div>
+        <h1 class="h1 reveal" style="margin-top:8px">
+          Crafted with <span style="color:var(--accent)">passion</span>,<br/>delivered with love
+        </h1>
+        <p class="reveal" style="max-width:520px; margin-top:12px; opacity:.82; line-height:1.65">
+          From truffle pizzas to hazelnut lattes — order premium café food, reserve your table, or pick up on the go.
+        </p>
+
+        <div class="hero-ctas reveal">
+          <a class="btn btn-primary ripple" href="menu.html" style="padding:14px 22px; font-size:1rem;">
+            Order Now
+          </a>
+          <a class="btn btn-ghost ripple" href="reserve.html" style="padding:14px 22px; font-size:1rem;">
+            Reserve Table
+          </a>
+        </div>
+
+        <div class="hero-meta reveal">
+          <div class="rating-pill">
+            <span class="stars">★★★★★</span>
+            <div>
+              <div style="font-weight:800">4.8 / 5</div>
+              <div class="small muted">2,400+ reviews</div>
+            </div>
+          </div>
+          <div class="rating-pill">
+            <span style="font-size:1.4rem">🍽️</span>
+            <div>
+              <div style="font-weight:800">20+ items</div>
+              <div class="small muted">Fresh daily</div>
+            </div>
+          </div>
+          <div class="rating-pill">
+            <span style="font-size:1.4rem">⚡</span>
+            <div>
+              <div style="font-weight:800">~15 min</div>
+              <div class="small muted">Avg. prep time</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-indicator reveal">
+          <div class="mouse" aria-hidden="true"></div>
+          <span class="small muted">Scroll to explore</span>
+        </div>
+      </div>
+
+      <div class="hero-panel glass reveal" style="border-radius:26px;">
+        <div class="small muted" style="margin-bottom:12px">Popular right now</div>
+        <div class="dish-grid" id="heroFeatured" style="grid-template-columns: 1fr 1fr; gap:12px;">
+          <!-- Filled by JS -->
+        </div>
+        <a class="btn btn-ghost ripple" href="menu.html" style="width:100%; justify-content:center; margin-top:14px;">
+          View full menu →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular dishes section -->
+  <section class="popular-section">
+    <div class="container">
+      <div class="small muted reveal">Editor's picks</div>
+      <div class="h2 reveal" style="margin-top:8px">Most loved dishes</div>
+      <p class="small muted reveal" style="margin-top:8px; line-height:1.6">Handpicked bestsellers loved by our regulars.</p>
+
+      <div class="popular-grid" id="popularGrid">
+        <!-- Filled by JS -->
+      </div>
+      <div style="text-align:center; margin-top:28px">
+        <a class="btn btn-primary ripple" href="menu.html" style="padding:14px 28px; font-size:1rem;">Browse Full Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features section -->
+  <section class="section-tight">
+    <div class="container">
+      <div class="small muted reveal">Why Brew &amp; Bloom</div>
+      <div class="h2 reveal" style="margin-top:8px">The premium experience</div>
+
+      <div class="feature-grid">
+        <div class="feature-card glass reveal">
+          <div class="feature-icon">☕</div>
+          <div style="font-weight:800; font-size:1.05rem">Premium ingredients</div>
+          <p class="small muted" style="margin-top:8px; line-height:1.6">Every dish crafted with hand-selected, quality ingredients for an unmatched taste.</p>
+        </div>
+        <div class="feature-card glass reveal">
+          <div class="feature-icon">⚡</div>
+          <div style="font-weight:800; font-size:1.05rem">Express delivery</div>
+          <p class="small muted" style="margin-top:8px; line-height:1.6">Hot food at your door in as little as 15 minutes — or pick up at the counter.</p>
+        </div>
+        <div class="feature-card glass reveal">
+          <div class="feature-icon">🪑</div>
+          <div style="font-weight:800; font-size:1.05rem">Table reservations</div>
+          <p class="small muted" style="margin-top:8px; line-height:1.6">Reserve the perfect table for your occasion — romantic dinner, work lunch, or family brunch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom:14px">
+            <img src="./image/logo.png" alt="Brew &amp; Bloom logo" class="logo" />
+            <div>
+              <div style="font-weight:800">Brew &amp; Bloom</div>
+              <div class="small muted">Premium café</div>
+            </div>
+          </div>
+          <p class="small muted" style="line-height:1.65; max-width:280px">
+            A demo café ordering UI. No real payments or orders processed.
+          </p>
+        </div>
+        <div>
+          <div style="font-weight:800; margin-bottom:12px">Quick links</div>
+          <div style="display:flex; flex-direction:column; gap:10px;" class="small">
+            <a href="menu.html" style="opacity:.82">Menu</a>
+            <a href="checkout.html" style="opacity:.82">Checkout</a>
+            <a href="reserve.html" style="opacity:.82">Reserve</a>
+            <a href="confirmation.html" style="opacity:.82">Order Confirmation</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800; margin-bottom:12px">Offers</div>
+          <div class="small muted" style="line-height:1.65">
+            GOLD10 — 10% off<br/>
+            BLOOM20 — 20% off<br/>
+            WELCOME50 — ₹50 flat off
+          </div>
+        </div>
+      </div>
+      <div class="hr" style="margin-top:28px"></div>
+      <div class="small muted" style="text-align:center; margin-top:18px">© <span id="year"></span> Brew &amp; Bloom — Demo UI</div>
+    </div>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Profile dropdown
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    profileBtn?.addEventListener('click', () => profileDropdown?.classList.toggle('open'));
+    document.addEventListener('click', (e) => {
+      if (!profileBtn || !profileDropdown) return;
+      if (profileDropdown.contains(e.target) || profileBtn.contains(e.target)) return;
+      profileDropdown.classList.remove('open');
+    });
+
+    // Cart close button
+    document.getElementById('cartCloseBtn')?.addEventListener('click', () => {
+      document.querySelector('.drawer-overlay')?.classList.remove('open');
+      document.querySelector('.drawer')?.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    // Render hero featured (2 bestsellers)
+    function renderHeroFeatured() {
+      const grid = document.getElementById('heroFeatured');
+      if (!grid || !window.BREWBLOOM_DISHES) return;
+      const picks = window.BREWBLOOM_DISHES.filter(d => d.bestseller).slice(0, 4);
+      grid.innerHTML = '';
+      picks.forEach(d => {
+        const discounted = d.discountPct ? Math.round(d.price - d.price * d.discountPct / 100) : d.price;
+        const card = document.createElement('div');
+        card.className = 'dish-card reveal';
+        card.innerHTML = `
+          <div class="dish-img">
+            <img loading="lazy" alt="${d.name}" src="${d.image}" />
+          </div>
+          <div class="dish-body">
+            <div class="dish-title">
+              <div><h3>${d.name}</h3><div class="small muted">${d.timeMin} min</div></div>
+            </div>
+            <div class="line" style="margin:4px 0 0">
+              <b style="color:var(--white)">₹ ${discounted}</b>
+              <button class="btn btn-primary ripple" style="padding:8px 12px; font-size:.85rem" onclick="window.BB && window.BB.addToCart('${d.id}', 1)">Add</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Render popular section (6 bestsellers)
+    function renderPopular() {
+      const grid = document.getElementById('popularGrid');
+      if (!grid || !window.BREWBLOOM_DISHES) return;
+      const picks = window.BREWBLOOM_DISHES.filter(d => d.bestseller).slice(0, 6);
+      grid.innerHTML = '';
+      picks.forEach(d => {
+        const discounted = d.discountPct ? Math.round(d.price - d.price * d.discountPct / 100) : d.price;
+        const hasDiscount = !!d.discountPct && d.discountPct > 0;
+        const card = document.createElement('div');
+        card.className = 'dish-card reveal';
+        card.innerHTML = `
+          <div class="dish-img">
+            <img loading="lazy" alt="${d.name}" src="${d.image}" />
+            ${hasDiscount ? `<div style="position:absolute;top:10px;left:10px" class="badge badge-discount">${d.discountPct}% OFF</div>` : ''}
+          </div>
+          <div class="dish-body">
+            <div class="dish-title">
+              <div>
+                <h3>${d.name}</h3>
+                <div class="small muted">${d.timeMin} min prep</div>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge badge-gold">⭐ ${d.rating.toFixed(1)}</span>
+              <span class="badge">${d.veg ? 'Veg' : 'Non-Veg'}</span>
+              <span class="badge badge-green">Bestseller</span>
+            </div>
+            <div class="line" style="margin-top:8px; align-items:center">
+              <div>
+                <b style="color:var(--white); font-size:1rem">₹ ${discounted}</b>
+                ${hasDiscount ? `<s class="small muted" style="margin-left:6px">₹${d.price}</s>` : ''}
+              </div>
+              <button class="btn btn-primary ripple" style="padding:8px 14px" onclick="window.BB && window.BB.addToCart('${d.id}', 1)">Add to Cart</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // trigger reveal animation
+      if (window.requestAnimationFrame) {
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.reveal:not(.in)').forEach(el => {
+            el.classList.add('in');
+          });
+        });
+      }
+    }
+
+    // Wait for data.js + app.js to load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeroFeatured();
+      renderPopular();
+    });
+  </script>
+</body>
+</html>
